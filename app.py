@@ -3,8 +3,6 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-app = Flask(__name__)
-
 # Conexión a MongoDB Atlas
 client = MongoClient("mongodb+srv://armando59:trejo.arty@cluster0.osxgqoy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["cbtis272"]
