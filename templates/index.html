@@ -1,25 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Inicio - CBTis 272</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+    <meta charset="UTF-8" />
+    <title>CBTis 272 - Inicio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #800000; /* Guinda */
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #FFCC00; /* Mostaza */
+            padding: 20px;
+            color: #800000;
+        }
+        nav a {
+            color: #800000;
+            background-color: white;
+            padding: 10px 15px;
+            margin: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #ffe066;
+        }
+        main {
+            margin-top: 50px;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
-    <form class="formulario">
-        <h2>Sistema de Inscripciones CBTis 272</h2>
-
-        <a href="/registro">
-            <input type="button" value="Inscribirse (Nuevo alumno)">
-        </a>
-
-        <a href="/reinscripcion">
-            <input type="button" value="Reinscribirse (Alumno existente)">
-        </a>
-
-        <a href="/login">
-            <input type="button" value="Iniciar sesión">
-        </a>
-    </form>
+    <header>
+        <h1>CBTis 272</h1>
+        <p>Sistema de Inscripciones y Reinscripciones</p>
+    </header>
+    <nav>
+        <a href="/registro">Registro</a>
+        <a href="/login">Iniciar Sesión</a>
+        <a href="/admin/login">Administración</a>
+    </nav>
+    <main>
+        <h2>Bienvenido al sistema</h2>
+        <p>Por favor, selecciona una opción para continuar.</p>
+    </main>
 </body>
 </html>
