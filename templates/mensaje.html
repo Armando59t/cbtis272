@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff8e1;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .mensaje-box {
+            background-color: #ffffff;
+            border: 2px solid #800000;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        h2 {
+            color: #800000;
+        }
+        p {
+            font-size: 1.1em;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #FFCC00;
+            color: #800000;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #ffe066;
+        }
+    </style>
+</head>
+<body>
+    <div class="mensaje-box">
+        <h2>{{ titulo }}</h2>
+        <p>{{ mensaje }}</p>
+        <a href="{{ link }}">{{ texto_link }}</a>
+    </div>
+</body>
+</html>
