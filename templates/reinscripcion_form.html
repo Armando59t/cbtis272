@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reinscripción CBTis 272</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <form action="/actualizar_reinscripcion" method="POST" class="formulario">
+        <h2>Reinscripción - {{ alumno.nombres }}</h2>
+
+        <!-- Campo oculto para identificar al alumno -->
+        <input type="hidden" name="curp" value="{{ alumno.curp }}">
+
+        <label>Semestre:</label>
+        <input type="text" name="semestre" value="{{ alumno.semestre }}" required>
+
+        <label>Turno:</label>
+        <input type="text" name="turno" value="{{ alumno.turno }}" required>
+
+        <label>Teléfono:</label>
+        <input type="tel" name="telefono" value="{{ alumno.telefono }}" required>
+
+        <label>Correo electrónico:</label>
+        <input type="email" name="email" value="{{ alumno.email }}" required>
+
+        <label>Domicilio:</label>
+        <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required>
+
+        <label>Colonia:</label>
+        <input type="text" name="colonia" value="{{ alumno.colonia }}" required>
+
+        <label>Código Postal (CP):</label>
+        <input type="text" name="cp" value="{{ alumno.cp }}" required>
+
+        <input type="submit" value="Guardar cambios">
+        <a href="/">Volver al inicio</a>
+    </form>
+</body>
+</html>
