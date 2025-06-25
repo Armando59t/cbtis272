@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - CBTis 272</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <form class="formulario">
+        <h2>Sistema de Inscripciones CBTis 272</h2>
+
+        <a href="/registro">
+            <input type="button" value="Inscribirse (Nuevo alumno)">
+        </a>
+
+        <a href="/reinscripcion">
+            <input type="button" value="Reinscribirse (Alumno existente)">
+        </a>
+
+        <a href="/login">
+            <input type="button" value="Iniciar sesión">
+        </a>
+    </form>
+</body>
+</html>
