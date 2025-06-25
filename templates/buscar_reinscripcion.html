@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar alumno - Reinscripción CBTis 272</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <form action="/reinscripcion" method="POST" class="formulario">
+        <h2>Buscar alumno para reinscripción</h2>
+
+        <label>CURP:</label>
+        <input type="text" name="curp" required>
+
+        <input type="submit" value="Buscar">
+        <a href="/">Volver al inicio</a>
+    </form>
+</body>
+</html>
