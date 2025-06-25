@@ -1,8 +1,9 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session
 from pymongo import MongoClient
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'tu_clave_secreta_aqui_cambia_por_algo_seguro'
 
 # Conexión a MongoDB Atlas
 client = MongoClient("mongodb+srv://armando59:trejo.arty@cluster0.osxgqoy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -96,6 +97,32 @@ def actualizar_reinscripcion():
 
     usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
     return "¡Reinscripción actualizada con éxito! <a href='/'>Volver al inicio</a>"
+
+# ------------------ ADMIN BÁSICO ------------------
+
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        usuario = request.form["usuario"]
+        password = request.form["password"]
+        if usuario == "admin" and password == "1234":
+            session["admin_logged_in"] = True
+            return redirect("/admin")
+        else:
+            return "Usuario o contraseña incorrectos. <a href='/admin/login'>Intentar de nuevo</a>"
+    return render_template("admin_login.html")
+
+@app.route("/admin")
+def admin():
+    if not session.get("admin_logged_in"):
+        return redirect("/admin/login")
+    lista_usuarios = list(usuarios.find())
+    return render_template("admin.html", usuarios=lista_usuarios)
+
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop("admin_logged_in", None)
+    return redirect("/")
 
 # ------------------
 
