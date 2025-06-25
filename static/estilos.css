@@ -1,0 +1,78 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #fdfdfd;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 50px;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.formulario {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(128, 0, 0, 0.3); /* sombra guinda */
+    width: 100%;
+    max-width: 500px;
+    border-top: 10px solid #800000; /* franja guinda superior */
+    border-left: 4px solid #FFCC00; /* franja mostaza lateral */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #800000;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #800000;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #FFCC00; /* mostaza */
+    border: none;
+    color: #800000;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #e6b800; /* mostaza más oscuro */
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #800000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
