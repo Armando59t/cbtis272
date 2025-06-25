@@ -1,67 +1,70 @@
-!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Registro CBTis 272</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
 <body>
-    <h2>Formulario de Registro</h2>
-    <form action="/registrar" method="POST">
-        <label>Apellido paterno:</label><br>
-        <input type="text" name="apellido_paterno" required><br>
+    <form class="formulario" action="/registrar" method="POST">
+        <h2>Registro CBTis 272</h2>
 
-        <label>Apellido materno:</label><br>
-        <input type="text" name="apellido_materno" required><br>
+        <label>Apellido paterno:</label>
+        <input type="text" name="apellido_paterno" required>
 
-        <label>Nombres:</label><br>
-        <input type="text" name="nombres" required><br>
+        <label>Apellido materno:</label>
+        <input type="text" name="apellido_materno" required>
 
-        <label>Periodo:</label><br>
-        <input type="text" name="periodo" required><br>
+        <label>Nombres:</label>
+        <input type="text" name="nombres" required>
 
-        <label>Semestre:</label><br>
-        <input type="text" name="semestre" required><br>
+        <label>Periodo:</label>
+        <input type="text" name="periodo" required>
 
-        <label>Turno:</label><br>
-        <input type="text" name="turno" required><br>
+        <label>Semestre:</label>
+        <input type="text" name="semestre" required>
 
-        <label>Carrera:</label><br>
-        <input type="text" name="carrera" required><br>
+        <label>Turno:</label>
+        <input type="text" name="turno" required>
 
-        <label>CURP:</label><br>
-        <input type="text" name="curp" required><br>
+        <label>Carrera:</label>
+        <input type="text" name="carrera" required>
 
-        <label>Fecha de nacimiento:</label><br>
-        <input type="date" name="fecha_nacimiento" required><br>
+        <label>CURP:</label>
+        <input type="text" name="curp" required>
 
-        <label>Lugar de nacimiento:</label><br>
-        <input type="text" name="lugar_nacimiento" required><br>
+        <label>Fecha de nacimiento:</label>
+        <input type="date" name="fecha_nacimiento" required>
 
-        <label>Estado civil:</label><br>
-        <input type="text" name="estado_civil" required><br>
+        <label>Lugar de nacimiento:</label>
+        <input type="text" name="lugar_nacimiento" required>
 
-        <label>Colonia:</label><br>
-        <input type="text" name="colonia" required><br>
+        <label>Estado civil:</label>
+        <input type="text" name="estado_civil" required>
 
-        <label>Domicilio:</label><br>
-        <input type="text" name="domicilio" required><br>
+        <label>Colonia:</label>
+        <input type="text" name="colonia" required>
 
-        <label>Código Postal (CP):</label><br>
-        <input type="text" name="cp" required><br>
+        <label>Domicilio:</label>
+        <input type="text" name="domicilio" required>
 
-        <label>Número de teléfono:</label><br>
-        <input type="tel" name="telefono" required><br>
+        <label>Código Postal (CP):</label>
+        <input type="text" name="cp" required>
 
-        <label>Correo electrónico:</label><br>
-        <input type="email" name="email" required><br>
+        <label>Número de teléfono:</label>
+        <input type="tel" name="telefono" required>
 
-        <label>Tipo de sangre:</label><br>
-        <input type="text" name="tipo_sangre" required><br>
+        <label>Correo electrónico:</label>
+        <input type="email" name="email" required>
 
-        <label>Tipos de alergias:</label><br>
-        <input type="text" name="alergias"><br><br>
+        <label>Tipo de sangre:</label>
+        <input type="text" name="tipo_sangre" required>
+
+        <label>Tipos de alergias:</label>
+        <input type="text" name="alergias">
 
         <input type="submit" value="Registrarse">
+        <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
     </form>
-    <p><a href="/login">¿Ya tienes cuenta? Inicia sesión</a></p>
 </body>
 </html>
