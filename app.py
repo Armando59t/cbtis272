@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'tu_clave_secreta_aqui_cambia_por_algo_seguro'
+app.secret_key = 'clave_super_secreta'
 
 # Conexión a MongoDB Atlas
 client = MongoClient("mongodb+srv://armando59:trejo.arty@cluster0.osxgqoy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -15,7 +15,7 @@ usuarios = db["usuarios"]
 def inicio():
     return render_template("index.html")
 
-# ------------------ INSCRIPCIÓN ------------------
+# ------------------ REGISTRO ------------------
 
 @app.route("/registro")
 def mostrar_registro():
@@ -45,10 +45,10 @@ def registrar():
     }
 
     if usuarios.find_one({"curp": datos["curp"]}):
-        return "Ese CURP ya está registrado. <a href='/login'>Inicia sesión</a>"
+        return render_template("mensaje.html", titulo="CURP ya registrado", mensaje="Este CURP ya fue usado. Si ya te registraste, inicia sesión.", link="/login", texto_link="Ir al Login")
 
     usuarios.insert_one(datos)
-    return "¡Registro exitoso! <a href='/login'>Inicia sesión</a>"
+    return render_template("mensaje.html", titulo="¡Registro Exitoso!", mensaje="Tu registro ha sido guardado correctamente.", link="/login", texto_link="Iniciar sesión")
 
 # ------------------ LOGIN ------------------
 
@@ -64,9 +64,10 @@ def iniciar_sesion():
     usuario = usuarios.find_one({"curp": curp, "email": email})
 
     if usuario:
-        return f"¡Bienvenido {usuario['nombres']}!"
+        mensaje = f"¡Bienvenido {usuario['nombres']}!"
+        return render_template("mensaje.html", titulo="Inicio de Sesión Correcto", mensaje=mensaje, link="/", texto_link="Volver al inicio")
     else:
-        return "CURP o correo incorrecto. <a href='/login'>Intenta de nuevo</a>"
+        return render_template("mensaje.html", titulo="Error", mensaje="CURP o correo incorrecto.", link="/login", texto_link="Intentar de nuevo")
 
 # ------------------ REINSCRIPCIÓN ------------------
 
@@ -78,7 +79,7 @@ def reinscripcion():
         if alumno:
             return render_template("reinscripcion_form.html", alumno=alumno)
         else:
-            return "CURP no encontrado. <a href='/reinscripcion'>Intenta de nuevo</a>"
+            return render_template("mensaje.html", titulo="No encontrado", mensaje="El CURP no se encontró.", link="/reinscripcion", texto_link="Intentar de nuevo")
     return render_template("buscar_reinscripcion.html")
 
 @app.route("/actualizar_reinscripcion", methods=["POST"])
@@ -96,9 +97,9 @@ def actualizar_reinscripcion():
     }
 
     usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
-    return "¡Reinscripción actualizada con éxito! <a href='/'>Volver al inicio</a>"
+    return render_template("mensaje.html", titulo="¡Reinscripción Exitosa!", mensaje="Tus datos fueron actualizados correctamente.", link="/", texto_link="Volver al inicio")
 
-# ------------------ ADMIN BÁSICO ------------------
+# ------------------ ADMIN ------------------
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
@@ -109,7 +110,7 @@ def admin_login():
             session["admin_logged_in"] = True
             return redirect("/admin")
         else:
-            return "Usuario o contraseña incorrectos. <a href='/admin/login'>Intentar de nuevo</a>"
+            return render_template("mensaje.html", titulo="Error", mensaje="Usuario o contraseña incorrectos.", link="/admin/login", texto_link="Intentar de nuevo")
     return render_template("admin_login.html")
 
 @app.route("/admin")
