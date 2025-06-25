@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from pymongo import MongoClient
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -8,9 +9,12 @@ client = MongoClient("mongodb+srv://armando59:trejo.arty@cluster0.osxgqoy.mongod
 db = client["cbtis272"]
 usuarios = db["usuarios"]
 
+# Página de inicio
 @app.route("/")
 def inicio():
-    return redirect("/login")
+    return render_template("index.html")
+
+# ------------------ INSCRIPCIÓN ------------------
 
 @app.route("/registro")
 def mostrar_registro():
@@ -45,6 +49,8 @@ def registrar():
     usuarios.insert_one(datos)
     return "¡Registro exitoso! <a href='/login'>Inicia sesión</a>"
 
+# ------------------ LOGIN ------------------
+
 @app.route("/login")
 def mostrar_login():
     return render_template("login.html")
@@ -60,6 +66,38 @@ def iniciar_sesion():
         return f"¡Bienvenido {usuario['nombres']}!"
     else:
         return "CURP o correo incorrecto. <a href='/login'>Intenta de nuevo</a>"
+
+# ------------------ REINSCRIPCIÓN ------------------
+
+@app.route("/reinscripcion", methods=["GET", "POST"])
+def reinscripcion():
+    if request.method == "POST":
+        curp = request.form["curp"]
+        alumno = usuarios.find_one({"curp": curp})
+        if alumno:
+            return render_template("reinscripcion_form.html", alumno=alumno)
+        else:
+            return "CURP no encontrado. <a href='/reinscripcion'>Intenta de nuevo</a>"
+    return render_template("buscar_reinscripcion.html")
+
+@app.route("/actualizar_reinscripcion", methods=["POST"])
+def actualizar_reinscripcion():
+    curp = request.form["curp"]
+    nuevos_datos = {
+        "semestre": request.form["semestre"],
+        "turno": request.form["turno"],
+        "telefono": request.form["telefono"],
+        "email": request.form["email"],
+        "domicilio": request.form["domicilio"],
+        "colonia": request.form["colonia"],
+        "cp": request.form["cp"],
+        "fecha_reinscripcion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
+    usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
+    return "¡Reinscripción actualizada con éxito! <a href='/'>Volver al inicio</a>"
+
+# ------------------
 
 if __name__ == "__main__":
     app.run(debug=True)
