@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block titulo %}Editar Alumno{% endblock %}
+
+{% block contenido %}
+    <h2>Editar Alumno</h2>
+    <form method="POST" action="">
+        <label>Apellido paterno:</label><br>
+        <input type="text" name="apellido_paterno" value="{{ alumno.apellido_paterno }}" required><br>
+
+        <label>Apellido materno:</label><br>
+        <input type="text" name="apellido_materno" value="{{ alumno.apellido_materno }}" required><br>
+
+        <label>Nombres:</label><br>
+        <input type="text" name="nombres" value="{{ alumno.nombres }}" required><br>
+
+        <label>Periodo:</label><br>
+        <input type="text" name="periodo" value="{{ alumno.periodo }}" required><br>
+
+        <label>Semestre:</label><br>
+        <input type="text" name="semestre" value="{{ alumno.semestre }}" required><br>
+
+        <label>Turno:</label><br>
+        <input type="text" name="turno" value="{{ alumno.turno }}" required><br>
+
+        <label>Carrera:</label><br>
+        <input type="text" name="carrera" value="{{ alumno.carrera }}" required><br>
+
+        <label>CURP:</label><br>
+        <input type="text" name="curp" value="{{ alumno.curp }}" readonly><br>
+
+        <label>Fecha de nacimiento:</label><br>
+        <input type="date" name="fecha_nacimiento" value="{{ alumno.fecha_nacimiento }}" required><br>
+
+        <label>Lugar de nacimiento:</label><br>
+        <input type="text" name="lugar_nacimiento" value="{{ alumno.lugar_nacimiento }}" required><br>
+
+        <label>Estado civil:</label><br>
+        <input type="text" name="estado_civil" value="{{ alumno.estado_civil }}" required><br>
+
+        <label>Colonia:</label><br>
+        <input type="text" name="colonia" value="{{ alumno.colonia }}" required><br>
+
+        <label>Domicilio:</label><br>
+        <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required><br>
+
+        <label>Código Postal (CP):</label><br>
+        <input type="text" name="cp" value="{{ alumno.cp }}" required><br>
+
+        <label>Número de teléfono:</label><br>
+        <input type="tel" name="telefono" value="{{ alumno.telefono }}" required><br>
+
+        <label>Correo electrónico:</label><br>
+        <input type="email" name="email" value="{{ alumno.email }}" required><br>
+
+        <label>Tipo de sangre:</label><br>
+        <input type="text" name="tipo_sangre" value="{{ alumno.tipo_sangre }}" required><br>
+
+        <label>Tipos de alergias:</label><br>
+        <input type="text" name="alergias" value="{{ alumno.alergias }}"><br><br>
+
+        <input type="submit" value="Guardar cambios" style="background-color:#800000; color:white; padding:10px 20px; border:none; cursor:pointer; border-radius:5px;">
+    </form>
+    <br>
+    <a href="/admin/alumno/{{ alumno.curp }}" style="color:#800000;">← Volver a detalles del alumno</a>
+{% endblock %}
