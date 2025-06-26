@@ -1,70 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Registro CBTis 272</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-</head>
-<body>
-    <form class="formulario" action="/registrar" method="POST">
-        <h2>Registro CBTis 272</h2>
+{% extends "base.html" %}
 
-        <label>Apellido paterno:</label>
-        <input type="text" name="apellido_paterno" required>
+{% block titulo %}Registro - CBTis 272{% endblock %}
 
-        <label>Apellido materno:</label>
-        <input type="text" name="apellido_materno" required>
-
-        <label>Nombres:</label>
-        <input type="text" name="nombres" required>
-
-        <label>Periodo:</label>
-        <input type="text" name="periodo" required>
-
-        <label>Semestre:</label>
-        <input type="text" name="semestre" required>
-
-        <label>Turno:</label>
-        <input type="text" name="turno" required>
-
-        <label>Carrera:</label>
-        <input type="text" name="carrera" required>
-
-        <label>CURP:</label>
-        <input type="text" name="curp" required>
-
-        <label>Fecha de nacimiento:</label>
-        <input type="date" name="fecha_nacimiento" required>
-
-        <label>Lugar de nacimiento:</label>
-        <input type="text" name="lugar_nacimiento" required>
-
-        <label>Estado civil:</label>
-        <input type="text" name="estado_civil" required>
-
-        <label>Colonia:</label>
-        <input type="text" name="colonia" required>
-
-        <label>Domicilio:</label>
-        <input type="text" name="domicilio" required>
-
-        <label>Código Postal (CP):</label>
-        <input type="text" name="cp" required>
-
-        <label>Número de teléfono:</label>
-        <input type="tel" name="telefono" required>
-
-        <label>Correo electrónico:</label>
-        <input type="email" name="email" required>
-
-        <label>Tipo de sangre:</label>
-        <input type="text" name="tipo_sangre" required>
-
-        <label>Tipos de alergias:</label>
-        <input type="text" name="alergias">
-
+{% block contenido %}
+    <h2>Formulario de Registro</h2>
+    <form action="/registrar" method="POST">
+        <input type="text" name="apellido_paterno" placeholder="Apellido paterno" required><br>
+        <input type="text" name="apellido_materno" placeholder="Apellido materno" required><br>
+        <input type="text" name="nombres" placeholder="Nombres" required><br>
+        <input type="text" name="periodo" placeholder="Periodo" required><br>
+        <input type="text" name="semestre" placeholder="Semestre" required><br>
+        <input type="text" name="turno" placeholder="Turno" required><br>
+        <input type="text" name="carrera" placeholder="Carrera" required><br>
+        <input type="text" name="curp" placeholder="CURP" required><br>
+        <input type="date" name="fecha_nacimiento" required><br>
+        <input type="text" name="lugar_nacimiento" placeholder="Lugar de nacimiento" required><br>
+        <input type="text" name="estado_civil" placeholder="Estado civil" required><br>
+        <input type="text" name="colonia" placeholder="Colonia" required><br>
+        <input type="text" name="domicilio" placeholder="Domicilio" required><br>
+        <input type="text" name="cp" placeholder="Código Postal" required><br>
+        <input type="tel" name="telefono" placeholder="Teléfono" required><br>
+        <input type="email" name="email" placeholder="Correo electrónico" required><br>
+        <input type="text" name="tipo_sangre" placeholder="Tipo de sangre" required><br>
+        <input type="text" name="alergias" placeholder="Alergias"><br><br>
         <input type="submit" value="Registrarse">
-        <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
     </form>
-</body>
-</html>
+{% endblock %}
