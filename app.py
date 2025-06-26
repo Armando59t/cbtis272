@@ -15,6 +15,7 @@ admins = db["admins"]
 def inicio():
     return render_template("index.html")
 
+# ---------- REGISTRO ----------
 @app.route("/registro")
 def mostrar_registro():
     return render_template("registro.html")
@@ -48,6 +49,7 @@ def registrar():
     usuarios.insert_one(datos)
     return render_template("mensaje.html", titulo="Registro exitoso", mensaje="¡Tu registro fue guardado!", link="/login", texto_link="Inicia sesión")
 
+# ---------- LOGIN ALUMNO ----------
 @app.route("/login")
 def mostrar_login():
     return render_template("login.html")
@@ -60,40 +62,46 @@ def iniciar_sesion():
     usuario = usuarios.find_one({"curp": curp, "email": email})
 
     if usuario:
-        return render_template("mensaje.html", titulo="Bienvenido", mensaje=f"Bienvenido, {usuario['nombres']}", link="/", texto_link="Ir al inicio")
+        session["alumno_nombre"] = usuario["nombres"]
+        session["alumno_curp"] = usuario["curp"]
+        return render_template("menu_alumno.html", nombre=usuario["nombres"])
     else:
         return render_template("mensaje.html", titulo="Error", mensaje="CURP o correo incorrecto", link="/login", texto_link="Intentar de nuevo")
 
+# ---------- MENU ALUMNO ----------
+@app.route("/logout")
+def logout():
+    session.pop("alumno_nombre", None)
+    session.pop("alumno_curp", None)
+    session.pop("admin_logged_in", None)
+    return redirect("/login")
+
+# ---------- REINSCRIPCIÓN ----------
 @app.route("/reinscripcion", methods=["GET", "POST"])
 def reinscripcion():
+    if not session.get("alumno_curp"):
+        return redirect("/login")
+
+    curp = session["alumno_curp"]
+    alumno = usuarios.find_one({"curp": curp})
+
     if request.method == "POST":
-        curp = request.form["curp"]
-        alumno = usuarios.find_one({"curp": curp})
-        if alumno:
-            return render_template("reinscripcion_form.html", alumno=alumno)
-        else:
-            return render_template("mensaje.html", titulo="No encontrado", mensaje="CURP no encontrado", link="/reinscripcion", texto_link="Volver")
-    return render_template("buscar_reinscripcion.html")
+        nuevos_datos = {
+            "semestre": request.form["semestre"],
+            "turno": request.form["turno"],
+            "telefono": request.form["telefono"],
+            "email": request.form["email"],
+            "domicilio": request.form["domicilio"],
+            "colonia": request.form["colonia"],
+            "cp": request.form["cp"],
+            "fecha_reinscripcion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
+        return render_template("mensaje.html", titulo="Reinscripción exitosa", mensaje="Tus datos fueron actualizados", link="/", texto_link="Ir al inicio")
 
-@app.route("/guardar_reinscripcion", methods=["POST"])
-def guardar_reinscripcion():
-    curp = request.form["curp"]
-    nuevos_datos = {
-        "semestre": request.form["semestre"],
-        "turno": request.form["turno"],
-        "telefono": request.form["telefono"],
-        "email": request.form["email"],
-        "domicilio": request.form["domicilio"],
-        "colonia": request.form["colonia"],
-        "cp": request.form["cp"],
-        "fecha_reinscripcion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
+    return render_template("reinscripcion_form.html", alumno=alumno)
 
-    usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
-    return render_template("mensaje.html", titulo="Reinscripción exitosa", mensaje="Tus datos fueron actualizados", link="/", texto_link="Ir al inicio")
-
-# ----------- ADMIN -----------
-
+# ---------- ADMIN LOGIN ----------
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -108,39 +116,28 @@ def admin_login():
             return render_template("mensaje.html", titulo="Acceso denegado", mensaje="Usuario o contraseña incorrectos", link="/admin/login", texto_link="Intentar de nuevo")
     return render_template("admin_login.html")
 
-@app.route("/admin")
+# ---------- PANEL ADMIN ----------
+@app.route("/admin", methods=["GET", "POST"])
 def admin():
     if not session.get("admin_logged_in"):
         return redirect("/admin/login")
 
-    lista_usuarios = []
+    usuarios_encontrados = []
+
     if request.method == "POST":
-        busqueda = request.form.get("busqueda", "")
-        lista_usuarios = list(usuarios.find({
+        busqueda = request.form["busqueda"]
+        usuarios_encontrados = list(usuarios.find({
             "$or": [
                 {"nombres": {"$regex": busqueda, "$options": "i"}},
                 {"curp": {"$regex": busqueda, "$options": "i"}}
             ]
         }))
     else:
-        lista_usuarios = list(usuarios.find())
+        usuarios_encontrados = list(usuarios.find())
 
-    return render_template("admin.html", usuarios=lista_usuarios)
+    return render_template("admin.html", usuarios=usuarios_encontrados)
 
-@app.route("/admin", methods=["POST"])
-def admin_post():
-    if not session.get("admin_logged_in"):
-        return redirect("/admin/login")
-
-    busqueda = request.form["busqueda"]
-    lista_usuarios = list(usuarios.find({
-        "$or": [
-            {"nombres": {"$regex": busqueda, "$options": "i"}},
-            {"curp": {"$regex": busqueda, "$options": "i"}}
-        ]
-    }))
-    return render_template("admin.html", usuarios=lista_usuarios)
-
+# ---------- VER DETALLE ALUMNO ----------
 @app.route("/admin/alumno/<curp>")
 def ver_alumno(curp):
     if not session.get("admin_logged_in"):
@@ -152,6 +149,7 @@ def ver_alumno(curp):
 
     return render_template("alumno_detalle.html", alumno=alumno)
 
+# ---------- EDITAR ALUMNO ----------
 @app.route("/admin/alumno/<curp>/editar", methods=["GET", "POST"])
 def editar_alumno(curp):
     if not session.get("admin_logged_in"):
@@ -184,16 +182,11 @@ def editar_alumno(curp):
         }
 
         usuarios.update_one({"curp": curp}, {"$set": datos_actualizados})
-
         return render_template("mensaje.html", titulo="Actualización exitosa", mensaje="Datos actualizados correctamente", link="/admin", texto_link="Volver al panel")
 
     return render_template("editar_alumno.html", alumno=alumno)
 
-# ----------- CERRAR SESIÓN ADMIN -----------
-@app.route("/admin/logout")
-def admin_logout():
-    session.pop("admin_logged_in", None)
-    return redirect("/admin/login")
+# ---------- LOGOUT ADMIN (ya incluido en /logout) ----------
 
 if __name__ == "__main__":
     app.run(debug=True)
