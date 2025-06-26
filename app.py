@@ -108,14 +108,14 @@ def admin_login():
             return render_template("mensaje.html", titulo="Acceso denegado", mensaje="Usuario o contraseña incorrectos", link="/admin/login", texto_link="Intentar de nuevo")
     return render_template("admin_login.html")
 
-@app.route("/admin", methods=["GET", "POST"])
+@app.route("/admin")
 def admin():
     if not session.get("admin_logged_in"):
         return redirect("/admin/login")
 
     lista_usuarios = []
     if request.method == "POST":
-        busqueda = request.form["busqueda"]
+        busqueda = request.form.get("busqueda", "")
         lista_usuarios = list(usuarios.find({
             "$or": [
                 {"nombres": {"$regex": busqueda, "$options": "i"}},
@@ -125,6 +125,20 @@ def admin():
     else:
         lista_usuarios = list(usuarios.find())
 
+    return render_template("admin.html", usuarios=lista_usuarios)
+
+@app.route("/admin", methods=["POST"])
+def admin_post():
+    if not session.get("admin_logged_in"):
+        return redirect("/admin/login")
+
+    busqueda = request.form["busqueda"]
+    lista_usuarios = list(usuarios.find({
+        "$or": [
+            {"nombres": {"$regex": busqueda, "$options": "i"}},
+            {"curp": {"$regex": busqueda, "$options": "i"}}
+        ]
+    }))
     return render_template("admin.html", usuarios=lista_usuarios)
 
 @app.route("/admin/alumno/<curp>")
@@ -137,6 +151,43 @@ def ver_alumno(curp):
         return render_template("mensaje.html", titulo="No encontrado", mensaje="Alumno no encontrado", link="/admin", texto_link="Volver")
 
     return render_template("alumno_detalle.html", alumno=alumno)
+
+@app.route("/admin/alumno/<curp>/editar", methods=["GET", "POST"])
+def editar_alumno(curp):
+    if not session.get("admin_logged_in"):
+        return redirect("/admin/login")
+
+    alumno = usuarios.find_one({"curp": curp})
+    if not alumno:
+        return render_template("mensaje.html", titulo="No encontrado", mensaje="Alumno no encontrado", link="/admin", texto_link="Volver")
+
+    if request.method == "POST":
+        datos_actualizados = {
+            "apellido_paterno": request.form["apellido_paterno"],
+            "apellido_materno": request.form["apellido_materno"],
+            "nombres": request.form["nombres"],
+            "periodo": request.form["periodo"],
+            "semestre": request.form["semestre"],
+            "turno": request.form["turno"],
+            "carrera": request.form["carrera"],
+            "curp": request.form["curp"],
+            "fecha_nacimiento": request.form["fecha_nacimiento"],
+            "lugar_nacimiento": request.form["lugar_nacimiento"],
+            "estado_civil": request.form["estado_civil"],
+            "colonia": request.form["colonia"],
+            "domicilio": request.form["domicilio"],
+            "cp": request.form["cp"],
+            "telefono": request.form["telefono"],
+            "email": request.form["email"],
+            "tipo_sangre": request.form["tipo_sangre"],
+            "alergias": request.form["alergias"]
+        }
+
+        usuarios.update_one({"curp": curp}, {"$set": datos_actualizados})
+
+        return render_template("mensaje.html", titulo="Actualización exitosa", mensaje="Datos actualizados correctamente", link="/admin", texto_link="Volver al panel")
+
+    return render_template("editar_alumno.html", alumno=alumno)
 
 # ----------- CERRAR SESIÓN ADMIN -----------
 @app.route("/admin/logout")
