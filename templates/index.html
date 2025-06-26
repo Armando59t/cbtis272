@@ -1,83 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>CBTis 272 - Inicio</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>CBTis 272 │ Portal de inscripciones</title>
+  <style>
+    :root {
+      --vino: #800000;
+      --crema: #fff8e7;
+      --dorado: #cfa968;
+      --gris: #f5f5f5;
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--crema);
+      color: #333;
+    }
 
-        .container {
-            text-align: center;
-            border: 1px solid #d1c47a;
-            border-radius: 12px;
-            padding: 40px 30px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.08);
-            max-width: 500px;
-            width: 90%;
-        }
+    header {
+      background-color: var(--vino);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
 
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            color: #800020;
-            margin-bottom: 10px;
-        }
+    .contenedor {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      border: 2px solid var(--dorado);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
 
-        .subtitulo {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 30px;
-        }
+    h2 {
+      border-left: 6px solid var(--vino);
+      padding-left: 10px;
+      color: var(--vino);
+      margin-top: 30px;
+    }
 
-        .boton {
-            display: block;
-            width: 100%;
-            background-color: #800020;
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
+    .opciones-acceso {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
 
-        .boton:hover {
-            background-color: #5a0015;
-        }
+    .tarjeta-opcion {
+      background-color: var(--gris);
+      border: 2px solid var(--dorado);
+      border-radius: 10px;
+      width: 250px;
+      height: 150px;
+      margin: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: var(--vino);
+    }
 
-        .footer {
-            margin-top: 25px;
-            font-size: 12px;
-            color: #999;
-        }
-    </style>
+    .tarjeta-opcion:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">CBTis 272</div>
-        <div class="subtitulo">Sistema de Inscripción y Reinscripción</div>
-        
-        <a href="/registro" class="boton">Registro nuevo</a>
-        <a href="/login" class="boton">Iniciar sesión</a>
-        <a href="/admin/login" class="boton">Acceso administrador</a>
 
-        <div class="footer">© 2025 CBTis 272 |</div>
-    </div>
+<header>
+  <h1>CBTis 272</h1>
+  <p>Portal de Inscripciones y Reinscripciones</p>
+</header>
+
+<div class="contenedor">
+  <h2>Selecciona tu tipo de acceso</h2>
+  <div class="opciones-acceso">
+    <a href="/admin/login" class="tarjeta-opcion">Administrador</a>
+    <a href="/login" class="tarjeta-opcion">Alumno</a>
+    <a href="/registro" class="tarjeta-opcion">Inscripción</a>
+  </div>
+</div>
+
 </body>
 </html>
