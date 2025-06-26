@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block titulo %}Detalles del Alumno{% endblock %}
+
+{% block contenido %}
+    <h2>Detalles del Alumno</h2>
+    <table>
+        {% for campo, valor in alumno.items() %}
+            {% if campo != "_id" %}
+            <tr>
+                <th style="text-align:left; padding-right:10px;">{{ campo.replace('_', ' ').capitalize() }}</th>
+                <td>{{ valor }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/admin">← Volver al panel de administración</a>
+{% endblock %}
