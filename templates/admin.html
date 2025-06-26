@@ -3,10 +3,16 @@
 {% block titulo %}Panel Admin - CBTis 272{% endblock %}
 
 {% block contenido %}
-    <h2>Lista de Alumnos Registrados</h2>
+    <h2>Panel de Administración</h2>
 
-    <div style="overflow-x:auto;">
-        <table border="1" cellpadding="5" cellspacing="0" style="margin: auto;">
+    <form method="POST" action="/admin">
+        <input type="text" name="busqueda" placeholder="Buscar por nombre o CURP..." required>
+        <input type="submit" value="Buscar">
+    </form>
+
+    {% if usuarios %}
+    <div style="overflow-x:auto; margin-top: 20px;">
+        <table>
             <thead>
                 <tr>
                     <th>CURP</th>
@@ -16,13 +22,13 @@
                     <th>Turno</th>
                     <th>Email</th>
                     <th>Teléfono</th>
-                    <th>Fecha Reinscripción</th>
+                    <th>Reinscripción</th>
                 </tr>
             </thead>
             <tbody>
                 {% for alumno in usuarios %}
                 <tr>
-                    <td>{{ alumno.curp }}</td>
+                    <td><a href="/admin/alumno/{{ alumno.curp }}">{{ alumno.curp }}</a></td>
                     <td>{{ alumno.nombres }}</td>
                     <td>{{ alumno.apellido_paterno }} {{ alumno.apellido_materno }}</td>
                     <td>{{ alumno.semestre }}</td>
@@ -35,4 +41,7 @@
             </tbody>
         </table>
     </div>
+    {% else %}
+        <p>No se encontraron alumnos.</p>
+    {% endif %}
 {% endblock %}
