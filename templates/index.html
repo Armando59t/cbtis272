@@ -2,68 +2,73 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Bienvenido - CBTis 272</title>
+    <title>Inicio - CBTis 272</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #800020, #d1c47a);
-            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #ffffff;
+            color: #333;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
+            align-items: center;
+            justify-content: center;
         }
 
         .contenedor {
-            background-color: white;
-            color: #333;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
             text-align: center;
-            width: 90%;
             max-width: 500px;
+            width: 90%;
+            padding: 40px;
+            border: 2px solid #d1c47a; /* dorado claro */
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
         h1 {
-            color: #800020;
-            margin-bottom: 20px;
+            color: #800020; /* guinda */
+            margin-bottom: 10px;
         }
 
         p {
+            color: #555;
             margin-bottom: 30px;
-            font-size: 16px;
         }
 
-        .botones a {
+        .boton {
             display: inline-block;
-            background-color: #800020;
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 25px;
-            margin: 10px;
+            margin: 8px;
+            padding: 12px 24px;
+            background-color: #800020; /* guinda */
+            color: white;
+            border: none;
             border-radius: 8px;
+            text-decoration: none;
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
 
-        .botones a:hover {
+        .boton:hover {
             background-color: #5a0015;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
         }
     </style>
 </head>
 <body>
     <div class="contenedor">
-        <h1>Bienvenido al Sistema de Registro CBTis 272</h1>
-        <p>Selecciona una opción para continuar</p>
-        <div class="botones">
-            <a href="/registro">Registrarse</a>
-            <a href="/login">Iniciar Sesión</a>
-            <a href="/admin/login">Administrador</a>
-        </div>
+        <h1>CBTis 272</h1>
+        <p>Bienvenido al sistema de inscripciones y reinscripciones</p>
+        <a class="boton" href="/registro">Registrarse</a>
+        <a class="boton" href="/login">Iniciar sesión</a>
+        <a class="boton" href="/admin/login">Administrador</a>
+        <div class="footer">Hecho con 💻 por Armando</div>
     </div>
 </body>
 </html>
