@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block titulo %}Bienvenido{% endblock %}
+
+{% block contenido %}
+    <h2>Hola, {{ nombre }}</h2>
+    <p>Selecciona una opción:</p>
+
+    <div style="text-align: center;">
+        <a href="/reinscripcion" 
+           style="background-color:#800000; color:white; padding: 10px 20px; margin: 10px; display:inline-block; border-radius:5px; text-decoration:none;">
+            Reinscripción
+        </a>
+        <a href="/logout" 
+           style="background-color:#FFCC00; color:#800000; padding: 10px 20px; margin: 10px; display:inline-block; border-radius:5px; text-decoration:none;">
+            Cerrar sesión
+        </a>
+    </div>
+{% endblock %}
