@@ -4,16 +4,27 @@
 
 {% block contenido %}
     <h2>Detalles del Alumno</h2>
-    <table>
+    <table style="border-collapse: collapse; margin: auto;">
         {% for campo, valor in alumno.items() %}
             {% if campo != "_id" %}
             <tr>
-                <th style="text-align:left; padding-right:10px;">{{ campo.replace('_', ' ').capitalize() }}</th>
-                <td>{{ valor }}</td>
+                <th style="text-align:left; padding: 8px 15px; background-color:#800000; color:white;">{{ campo.replace('_', ' ').capitalize() }}</th>
+                <td style="padding: 8px 15px; background-color:#fff8e1;">{{ valor }}</td>
             </tr>
             {% endif %}
         {% endfor %}
     </table>
     <br>
-    <a href="/admin">← Volver al panel de administración</a>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/admin/alumno/{{ alumno.curp }}/editar" 
+           style="background-color:#800000; color:white; padding:10px 20px; border-radius:5px; text-decoration:none; margin-right:10px; display:inline-block;">
+           Editar
+        </a>
+        <button onclick="if(confirm('¿Seguro que quieres eliminar este alumno?')) { alert('Función eliminar pendiente'); }" 
+                style="background-color:#FFCC00; color:#800000; border:none; padding: 10px 20px; cursor:pointer; border-radius:5px;">
+            Eliminar
+        </button>
+    </div>
+    <br>
+    <a href="/admin" style="color:#800000; font-weight:bold;">← Volver al panel de administración</a>
 {% endblock %}
