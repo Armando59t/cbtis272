@@ -2,50 +2,57 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio - CBTis 272</title>
+    <title>CBTis 272 - Inicio</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', sans-serif;
             background-color: #ffffff;
             color: #333;
-            margin: 0;
-            padding: 0;
             display: flex;
-            height: 100vh;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .contenedor {
+        .container {
             text-align: center;
+            border: 1px solid #d1c47a;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
             max-width: 500px;
             width: 90%;
-            padding: 40px;
-            border: 2px solid #d1c47a; /* dorado claro */
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            color: #800020; /* guinda */
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #800020;
             margin-bottom: 10px;
         }
 
-        p {
+        .subtitulo {
+            font-size: 16px;
             color: #555;
             margin-bottom: 30px;
         }
 
         .boton {
-            display: inline-block;
-            margin: 8px;
-            padding: 12px 24px;
-            background-color: #800020; /* guinda */
+            display: block;
+            width: 100%;
+            background-color: #800020;
             color: white;
-            border: none;
-            border-radius: 8px;
             text-decoration: none;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
@@ -55,20 +62,22 @@
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 12px;
             color: #999;
         }
     </style>
 </head>
 <body>
-    <div class="contenedor">
-        <h1>CBTis 272</h1>
-        <p>Bienvenido al sistema de inscripciones y reinscripciones</p>
-        <a class="boton" href="/registro">Registrarse</a>
-        <a class="boton" href="/login">Iniciar sesión</a>
-        <a class="boton" href="/admin/login">Administrador</a>
-        <div class="footer"></div>
+    <div class="container">
+        <div class="logo">CBTis 272</div>
+        <div class="subtitulo">Sistema de Inscripción y Reinscripción</div>
+        
+        <a href="/registro" class="boton">Registro nuevo</a>
+        <a href="/login" class="boton">Iniciar sesión</a>
+        <a href="/admin/login" class="boton">Acceso administrador</a>
+
+        <div class="footer">© 2025 CBTis 272 | Desarrollado por Armando</div>
     </div>
 </body>
 </html>
