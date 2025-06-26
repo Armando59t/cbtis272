@@ -1,60 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <title>CBTis 272 - Inicio</title>
+    <meta charset="UTF-8">
+    <title>Bienvenido - CBTis 272</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #800000; /* Guinda */
-            color: white;
+            background: linear-gradient(135deg, #800020, #d1c47a);
+            color: #fff;
             margin: 0;
             padding: 0;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        header {
-            background-color: #FFCC00; /* Mostaza */
-            padding: 20px;
-            color: #800000;
-        }
-        nav a {
-            color: #800000;
+
+        .contenedor {
             background-color: white;
-            padding: 10px 15px;
-            margin: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #800020;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .botones a {
             display: inline-block;
+            background-color: #800020;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            font-weight: bold;
             transition: background-color 0.3s ease;
         }
-        nav a:hover {
-            background-color: #ffe066;
-        }
-        main {
-            margin-top: 50px;
-        }
-        h1 {
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.2em;
+
+        .botones a:hover {
+            background-color: #5a0015;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>CBTis 272</h1>
-        <p>Sistema de Inscripciones y Reinscripciones</p>
-    </header>
-    <nav>
-        <a href="/registro">Registro</a>
-        <a href="/login">Iniciar Sesión</a>
-        <a href="/admin/login">Administración</a>
-    </nav>
-    <main>
-        <h2>Bienvenido al sistema</h2>
-        <p>Por favor, selecciona una opción para continuar.</p>
-    </main>
+    <div class="contenedor">
+        <h1>Bienvenido al Sistema de Registro CBTis 272</h1>
+        <p>Selecciona una opción para continuar</p>
+        <div class="botones">
+            <a href="/registro">Registrarse</a>
+            <a href="/login">Iniciar Sesión</a>
+            <a href="/admin/login">Administrador</a>
+        </div>
+    </div>
 </body>
 </html>
