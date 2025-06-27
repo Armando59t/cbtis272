@@ -1,28 +1,260 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro CBTis 272</title>
+  <style>
+    :root {
+      --vino: #800000;
+      --crema: #fff8e7;
+      --dorado: #cfa968;
+      --gris: #f5f5f5;
+    }
 
-{% block titulo %}Registro - CBTis 272{% endblock %}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--crema);
+      margin: 0;
+      padding: 0;
+    }
 
-{% block contenido %}
-    <h2>Formulario de Registro</h2>
-    <form action="/registrar" method="POST">
-        <input type="text" name="apellido_paterno" placeholder="Apellido paterno" required><br>
-        <input type="text" name="apellido_materno" placeholder="Apellido materno" required><br>
-        <input type="text" name="nombres" placeholder="Nombres" required><br>
-        <input type="text" name="periodo" placeholder="Periodo" required><br>
-        <input type="text" name="semestre" placeholder="Semestre" required><br>
-        <input type="text" name="turno" placeholder="Turno" required><br>
-        <input type="text" name="carrera" placeholder="Carrera" required><br>
-        <input type="text" name="curp" placeholder="CURP" required><br>
-        <input type="date" name="fecha_nacimiento" required><br>
-        <input type="text" name="lugar_nacimiento" placeholder="Lugar de nacimiento" required><br>
-        <input type="text" name="estado_civil" placeholder="Estado civil" required><br>
-        <input type="text" name="colonia" placeholder="Colonia" required><br>
-        <input type="text" name="domicilio" placeholder="Domicilio" required><br>
-        <input type="text" name="cp" placeholder="Código Postal" required><br>
-        <input type="tel" name="telefono" placeholder="Teléfono" required><br>
-        <input type="email" name="email" placeholder="Correo electrónico" required><br>
-        <input type="text" name="tipo_sangre" placeholder="Tipo de sangre" required><br>
-        <input type="text" name="alergias" placeholder="Alergias"><br><br>
-        <input type="submit" value="Registrarse">
-    </form>
-{% endblock %}
+    header {
+      background-color: var(--vino);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    form {
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 30px;
+      border: 2px solid var(--dorado);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: var(--vino);
+      margin-bottom: 20px;
+      border-left: 6px solid var(--vino);
+      padding-left: 10px;
+    }
+
+    .grupo {
+      margin-bottom: 25px;
+    }
+
+    .grupo label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .grupo input, .grupo select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .seccion {
+      margin-bottom: 30px;
+    }
+
+    .boton {
+      background-color: var(--vino);
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .boton:hover {
+      background-color: #a00000;
+    }
+
+    .volver {
+      margin-top: 20px;
+      display: inline-block;
+      color: var(--vino);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>CBTis 272</h1>
+  <p>Formulario de inscripción</p>
+</header>
+
+<form action="/registrar" method="POST">
+  <div class="seccion">
+    <h2>Datos personales</h2>
+
+    <div class="grupo">
+      <label>Apellido paterno</label>
+      <input type="text" name="apellido_paterno" required>
+    </div>
+
+    <div class="grupo">
+      <label>Apellido materno</label>
+      <input type="text" name="apellido_materno" required>
+    </div>
+
+    <div class="grupo">
+      <label>Nombre(s)</label>
+      <input type="text" name="nombres" required>
+    </div>
+
+    <div class="grupo">
+      <label>CURP</label>
+      <input type="text" name="curp" required>
+    </div>
+
+    <div class="grupo">
+      <label>Fecha de nacimiento</label>
+      <input type="date" name="fecha_nacimiento" required>
+    </div>
+
+    <div class="grupo">
+      <label>Lugar de nacimiento</label>
+      <input type="text" name="lugar_nacimiento" required>
+    </div>
+
+    <div class="grupo">
+      <label>Estado civil</label>
+      <input type="text" name="estado_civil" required>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h2>Datos escolares</h2>
+
+    <div class="grupo">
+      <label>Periodo</label>
+      <input type="text" name="periodo" required>
+    </div>
+
+    <div class="grupo">
+      <label>Semestre</label>
+      <input type="text" name="semestre" required>
+    </div>
+
+    <div class="grupo">
+      <label>Turno</label>
+      <input type="text" name="turno" required>
+    </div>
+
+    <div class="grupo">
+      <label>Carrera</label>
+      <input type="text" name="carrera" required>
+    </div>
+
+    <div class="grupo">
+      <label>Secundaria de procedencia</label>
+      <input type="text" name="secundaria" required>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h2>Contacto y domicilio</h2>
+
+    <div class="grupo">
+      <label>Domicilio</label>
+      <input type="text" name="domicilio" required>
+    </div>
+
+    <div class="grupo">
+      <label>Colonia</label>
+      <input type="text" name="colonia" required>
+    </div>
+
+    <div class="grupo">
+      <label>Código Postal (CP)</label>
+      <input type="text" name="cp" required>
+    </div>
+
+    <div class="grupo">
+      <label>Número de teléfono</label>
+      <input type="tel" name="telefono" required>
+    </div>
+
+    <div class="grupo">
+      <label>Correo electrónico</label>
+      <input type="email" name="email" required>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h2>Salud y emergencia</h2>
+
+    <div class="grupo">
+      <label>Tipo de sangre</label>
+      <input type="text" name="tipo_sangre">
+    </div>
+
+    <div class="grupo">
+      <label>¿Tiene alguna discapacidad?</label>
+      <input type="text" name="discapacidad">
+    </div>
+
+    <div class="grupo">
+      <label>¿Tiene alergias?</label>
+      <input type="text" name="alergias">
+    </div>
+
+    <div class="grupo">
+      <label>Observaciones médicas</label>
+      <input type="text" name="observaciones_medicas">
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h2>Datos del tutor</h2>
+
+    <div class="grupo">
+      <label>Nombre del tutor</label>
+      <input type="text" name="nombre_tutor" required>
+    </div>
+
+    <div class="grupo">
+      <label>Teléfono del tutor</label>
+      <input type="tel" name="telefono_tutor" required>
+    </div>
+
+    <div class="grupo">
+      <label>Correo del tutor</label>
+      <input type="email" name="correo_tutor" required>
+    </div>
+
+    <div class="grupo">
+      <label>Contacto en caso de emergencia (extra)</label>
+      <input type="text" name="contacto_emergencia" required>
+    </div>
+
+    <div class="grupo">
+      <label>Teléfono de emergencia</label>
+      <input type="tel" name="telefono_emergencia" required>
+    </div>
+  </div>
+
+  <button class="boton" type="submit">Registrar alumno</button>
+  <br><a class="volver" href="/">Volver al inicio</a>
+</form>
+
+</body>
+</html>
