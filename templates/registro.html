@@ -82,7 +82,6 @@
   <div class="contenedor">
     <h2>Formulario de Registro</h2>
     <form action="/registrar" method="POST">
-      
       <div class="fila">
         <div>
           <label>Apellido paterno:</label>
@@ -141,16 +140,16 @@
       <label>Código Postal (CP):</label>
       <input type="text" name="cp" required>
 
-      <label>Número de teléfono del alumno:</label>
+      <label>Teléfono del alumno:</label>
       <input type="tel" name="telefono" required>
 
-      <label>Correo electrónico del alumno:</label>
+      <label>Correo del alumno:</label>
       <input type="email" name="email" required>
 
       <label>Tipo de sangre:</label>
       <input type="text" name="tipo_sangre" required>
 
-      <label>Tipos de alergias:</label>
+      <label>Alergias:</label>
       <input type="text" name="alergias" required>
 
       <label>Nombre del padre o tutor:</label>
@@ -165,17 +164,17 @@
       <label>Escolaridad anterior (Secundaria):</label>
       <input type="text" name="escuela_anterior" required>
 
-      <label>¿Es alumno con discapacidad? (Sí / No):</label>
+      <label>¿Tiene alguna discapacidad?</label>
       <input type="text" name="discapacidad" required>
 
       <label>Observaciones médicas:</label>
-      <textarea name="observaciones_medicas" rows="3"></textarea>
+      <textarea name="observaciones_medicas"></textarea>
 
       <h3>Contacto extra en caso de emergencia</h3>
-      <label>Nombre del contacto:</label>
+      <label>Nombre:</label>
       <input type="text" name="contacto_extra_nombre" required>
 
-      <label>Teléfono del contacto:</label>
+      <label>Teléfono:</label>
       <input type="tel" name="contacto_extra_telefono" required>
 
       <button type="submit">Registrarse</button>
