@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Editar Alumno - CBTis 272</title>
   <style>
     :root {
@@ -26,7 +26,7 @@
       padding: 20px;
     }
 
-    form {
+    .contenedor {
       max-width: 900px;
       margin: 30px auto;
       background-color: white;
@@ -39,28 +39,28 @@
     h2 {
       color: var(--vino);
       margin-bottom: 20px;
-      border-left: 6px solid var(--vino);
-      padding-left: 10px;
+      text-align: center;
     }
 
     .grupo {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .grupo label {
       font-weight: bold;
       display: block;
       margin-bottom: 5px;
+      color: var(--vino);
     }
 
     .grupo input {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
 
-    .boton {
+    button {
       background-color: var(--vino);
       color: white;
       padding: 12px 25px;
@@ -69,24 +69,24 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
     }
 
-    .boton:hover {
+    button:hover {
       background-color: #a00000;
     }
 
-    .volver {
-      margin-top: 20px;
+    a.volver {
       display: inline-block;
+      margin-top: 20px;
       color: var(--vino);
       font-weight: bold;
       text-decoration: none;
     }
 
-    @media (max-width: 600px) {
-      form {
-        padding: 20px;
-      }
+    a.volver:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -97,101 +97,29 @@
   <p>Editar datos del alumno</p>
 </header>
 
-<form action="/admin/alumno/{{ alumno.curp }}/editar" method="POST">
-  <div class="grupo">
-    <label>Apellido paterno</label>
-    <input type="text" name="apellido_paterno" value="{{ alumno.apellido_paterno }}" required>
-  </div>
+<div class="contenedor">
+  <h2>{{ alumno.nombres }} - CURP: {{ alumno.curp }}</h2>
+  <form action="/admin/alumno/{{ alumno.curp }}/editar" method="POST">
 
-  <div class="grupo">
-    <label>Apellido materno</label>
-    <input type="text" name="apellido_materno" value="{{ alumno.apellido_materno }}" required>
-  </div>
+    {% for campo in [
+      'apellido_paterno', 'apellido_materno', 'nombres', 'periodo', 'semestre', 'turno', 'carrera',
+      'curp', 'fecha_nacimiento', 'lugar_nacimiento', 'estado_civil', 'colonia', 'domicilio', 'cp',
+      'telefono', 'email', 'tipo_sangre', 'alergias', 'nombre_tutor', 'telefono_tutor', 'email_tutor',
+      'escuela_anterior', 'discapacidad', 'observaciones_medicas', 'contacto_extra_nombre', 'contacto_extra_telefono'
+    ] %}
+      <div class="grupo">
+        <label for="{{ campo }}">{{ campo.replace('_', ' ').capitalize() }}</label>
+        <input type="{{ 'email' if 'email' in campo else 'tel' if 'telefono' in campo else 'date' if campo == 'fecha_nacimiento' else 'text' }}"
+               name="{{ campo }}"
+               value="{{ alumno[campo] }}"
+               required>
+      </div>
+    {% endfor %}
 
-  <div class="grupo">
-    <label>Nombres</label>
-    <input type="text" name="nombres" value="{{ alumno.nombres }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Periodo</label>
-    <input type="text" name="periodo" value="{{ alumno.periodo }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Semestre</label>
-    <input type="text" name="semestre" value="{{ alumno.semestre }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Turno</label>
-    <input type="text" name="turno" value="{{ alumno.turno }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Carrera</label>
-    <input type="text" name="carrera" value="{{ alumno.carrera }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>CURP</label>
-    <input type="text" name="curp" value="{{ alumno.curp }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Fecha de nacimiento</label>
-    <input type="date" name="fecha_nacimiento" value="{{ alumno.fecha_nacimiento }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Lugar de nacimiento</label>
-    <input type="text" name="lugar_nacimiento" value="{{ alumno.lugar_nacimiento }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Estado civil</label>
-    <input type="text" name="estado_civil" value="{{ alumno.estado_civil }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Colonia</label>
-    <input type="text" name="colonia" value="{{ alumno.colonia }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Domicilio</label>
-    <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Código Postal (CP)</label>
-    <input type="text" name="cp" value="{{ alumno.cp }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Teléfono</label>
-    <input type="tel" name="telefono" value="{{ alumno.telefono }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Correo electrónico</label>
-    <input type="email" name="email" value="{{ alumno.email }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Tipo de sangre</label>
-    <input type="text" name="tipo_sangre" value="{{ alumno.tipo_sangre }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Tipos de alergias</label>
-    <input type="text" name="alergias" value="{{ alumno.alergias }}">
-  </div>
-
-  <button class="boton" type="submit">Guardar cambios</button>
-  <br>
-  <a class="volver" href="/admin">Volver al panel</a>
-</form>
+    <button type="submit">Guardar cambios</button>
+    <a class="volver" href="/admin">Volver al panel</a>
+  </form>
+</div>
 
 </body>
 </html>
