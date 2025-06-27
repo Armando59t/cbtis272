@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reinscripción CBTis 272</title>
   <style>
     :root {
@@ -11,135 +11,154 @@
       --dorado: #cfa968;
       --gris: #f5f5f5;
     }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--crema);
       margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: var(--vino);
-      color: white;
-      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--crema);
+      color: #333;
       padding: 20px;
     }
-
-    form {
-      max-width: 900px;
-      margin: 30px auto;
+    .contenedor-reinscripcion {
+      max-width: 700px;
+      margin: auto;
       background-color: white;
-      padding: 30px;
       border: 2px solid var(--dorado);
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-
     h2 {
-      color: var(--vino);
-      margin-bottom: 20px;
       border-left: 6px solid var(--vino);
       padding-left: 10px;
-    }
-
-    .grupo {
+      color: var(--vino);
       margin-bottom: 25px;
+      text-align: center;
     }
-
-    .grupo label {
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: space-between;
+    }
+    label {
       font-weight: bold;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      color: var(--vino);
     }
-
-    .grupo input, .grupo select {
+    .campo {
+      flex: 1 1 45%;
+      min-width: 200px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"] {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 8px;
       border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
     }
-
-    button {
+    input[type="submit"] {
       background-color: var(--vino);
       color: white;
-      padding: 12px 25px;
-      font-size: 16px;
       font-weight: bold;
       border: none;
-      border-radius: 5px;
+      padding: 12px 25px;
+      border-radius: 8px;
       cursor: pointer;
       margin-top: 20px;
+      width: 100%;
+      font-size: 1.1em;
+      transition: background-color 0.3s;
     }
-
-    button:hover {
+    input[type="submit"]:hover {
       background-color: #a00000;
     }
-
-    a.volver {
-      margin-top: 20px;
+    a {
       display: inline-block;
+      margin-top: 15px;
       color: var(--vino);
-      font-weight: bold;
       text-decoration: none;
+      font-weight: bold;
     }
-
+    a:hover {
+      text-decoration: underline;
+    }
     @media (max-width: 600px) {
-      form {
-        padding: 20px;
+      .campo {
+        flex: 1 1 100%;
       }
     }
   </style>
 </head>
 <body>
+  <div class="contenedor-reinscripcion">
+    <h2>Reinscripción - {{ alumno.nombres }}</h2>
+    <form action="/reinscripcion" method="POST">
 
-<header>
-  <h1>CBTis 272</h1>
-  <p>Formulario de Reinscripción</p>
-</header>
+      <!-- Campo oculto para enviar la CURP -->
+      <input type="hidden" name="curp" value="{{ alumno.curp }}">
 
-<form action="/reinscripcion" method="POST">
-  <input type="hidden" name="curp" value="{{ alumno.curp }}">
+      <div class="campo">
+        <label for="semestre">Semestre:</label>
+        <input type="text" id="semestre" name="semestre" value="{{ alumno.semestre }}" required>
+      </div>
 
-  <div class="grupo">
-    <label>Semestre</label>
-    <input type="text" name="semestre" value="{{ alumno.semestre }}" required>
+      <div class="campo">
+        <label for="turno">Turno:</label>
+        <input type="text" id="turno" name="turno" value="{{ alumno.turno }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" value="{{ alumno.telefono }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="email" name="email" value="{{ alumno.email }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="domicilio">Domicilio:</label>
+        <input type="text" id="domicilio" name="domicilio" value="{{ alumno.domicilio }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="colonia">Colonia:</label>
+        <input type="text" id="colonia" name="colonia" value="{{ alumno.colonia }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="cp">Código Postal (CP):</label>
+        <input type="text" id="cp" name="cp" value="{{ alumno.cp }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="tutor_telefono">Teléfono del tutor o padre:</label>
+        <input type="tel" id="tutor_telefono" name="tutor_telefono" value="{{ alumno.tutor_telefono }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="contacto_emergencia_nombre">Contacto extra (nombre):</label>
+        <input type="text" id="contacto_emergencia_nombre" name="contacto_emergencia_nombre" value="{{ alumno.contacto_emergencia_nombre }}" required>
+      </div>
+
+      <div class="campo">
+        <label for="contacto_emergencia_telefono">Contacto extra (teléfono):</label>
+        <input type="tel" id="contacto_emergencia_telefono" name="contacto_emergencia_telefono" value="{{ alumno.contacto_emergencia_telefono }}" required>
+      </div>
+
+      <div class="campo" style="flex-basis: 100%;">
+        <label for="alergias">Tipos de alergias:</label>
+        <input type="text" id="alergias" name="alergias" value="{{ alumno.alergias }}">
+      </div>
+
+      <input type="submit" value="Guardar cambios">
+      <a href="/">Volver al inicio</a>
+    </form>
   </div>
-
-  <div class="grupo">
-    <label>Turno</label>
-    <input type="text" name="turno" value="{{ alumno.turno }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Teléfono</label>
-    <input type="tel" name="telefono" value="{{ alumno.telefono }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Correo electrónico</label>
-    <input type="email" name="email" value="{{ alumno.email }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Domicilio</label>
-    <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Colonia</label>
-    <input type="text" name="colonia" value="{{ alumno.colonia }}" required>
-  </div>
-
-  <div class="grupo">
-    <label>Código Postal (CP)</label>
-    <input type="text" name="cp" value="{{ alumno.cp }}" required>
-  </div>
-
-  <button type="submit">Guardar cambios</button>
-  <br>
-  <a class="volver" href="/">Volver al inicio</a>
-</form>
-
 </body>
 </html>
