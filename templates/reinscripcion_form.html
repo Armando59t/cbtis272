@@ -1,39 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Reinscripción CBTis 272</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reinscripción CBTis 272</title>
+  <style>
+    :root {
+      --vino: #800000;
+      --crema: #fff8e7;
+      --dorado: #cfa968;
+      --gris: #f5f5f5;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--crema);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--vino);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    form {
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 30px;
+      border: 2px solid var(--dorado);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: var(--vino);
+      margin-bottom: 20px;
+      border-left: 6px solid var(--vino);
+      padding-left: 10px;
+    }
+
+    .grupo {
+      margin-bottom: 25px;
+    }
+
+    .grupo label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .grupo input, .grupo select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: var(--vino);
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #a00000;
+    }
+
+    a.volver {
+      margin-top: 20px;
+      display: inline-block;
+      color: var(--vino);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <form action="/reinscripcion" method="POST" class="formulario">
-        <h2>Reinscripción - {{ alumno.nombres }}</h2>
 
-        <input type="hidden" name="curp" value="{{ alumno.curp }}">
+<header>
+  <h1>CBTis 272</h1>
+  <p>Formulario de Reinscripción</p>
+</header>
 
-        <label>Semestre:</label>
-        <input type="text" name="semestre" value="{{ alumno.semestre }}" required>
+<form action="/reinscripcion" method="POST">
+  <input type="hidden" name="curp" value="{{ alumno.curp }}">
 
-        <label>Turno:</label>
-        <input type="text" name="turno" value="{{ alumno.turno }}" required>
+  <div class="grupo">
+    <label>Semestre</label>
+    <input type="text" name="semestre" value="{{ alumno.semestre }}" required>
+  </div>
 
-        <label>Teléfono:</label>
-        <input type="tel" name="telefono" value="{{ alumno.telefono }}" required>
+  <div class="grupo">
+    <label>Turno</label>
+    <input type="text" name="turno" value="{{ alumno.turno }}" required>
+  </div>
 
-        <label>Correo electrónico:</label>
-        <input type="email" name="email" value="{{ alumno.email }}" required>
+  <div class="grupo">
+    <label>Teléfono</label>
+    <input type="tel" name="telefono" value="{{ alumno.telefono }}" required>
+  </div>
 
-        <label>Domicilio:</label>
-        <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required>
+  <div class="grupo">
+    <label>Correo electrónico</label>
+    <input type="email" name="email" value="{{ alumno.email }}" required>
+  </div>
 
-        <label>Colonia:</label>
-        <input type="text" name="colonia" value="{{ alumno.colonia }}" required>
+  <div class="grupo">
+    <label>Domicilio</label>
+    <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required>
+  </div>
 
-        <label>Código Postal (CP):</label>
-        <input type="text" name="cp" value="{{ alumno.cp }}" required>
+  <div class="grupo">
+    <label>Colonia</label>
+    <input type="text" name="colonia" value="{{ alumno.colonia }}" required>
+  </div>
 
-        <input type="submit" value="Guardar cambios">
-        <a href="/">Volver al inicio</a>
-    </form>
+  <div class="grupo">
+    <label>Código Postal (CP)</label>
+    <input type="text" name="cp" value="{{ alumno.cp }}" required>
+  </div>
+
+  <button type="submit">Guardar cambios</button>
+  <br>
+  <a class="volver" href="/">Volver al inicio</a>
+</form>
+
 </body>
 </html>
