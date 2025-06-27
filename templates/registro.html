@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro CBTis 272</title>
   <style>
     :root {
@@ -11,140 +11,174 @@
       --dorado: #cfa968;
       --gris: #f5f5f5;
     }
+
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background-color: var(--crema);
       color: #333;
-      padding: 20px;
+      padding: 10px;
     }
-    .contenedor-registro {
-      max-width: 700px;
+
+    .contenedor {
+      max-width: 900px;
       margin: auto;
       background-color: white;
       border: 2px solid var(--dorado);
-      border-radius: 10px;
       padding: 30px;
+      border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
+
     h2 {
-      border-left: 6px solid var(--vino);
-      padding-left: 10px;
-      color: var(--vino);
-      margin-bottom: 25px;
       text-align: center;
+      color: var(--vino);
     }
+
     form {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 15px;
-      justify-content: space-between;
     }
+
     label {
       font-weight: bold;
-      display: block;
-      margin-bottom: 6px;
-      color: var(--vino);
+      margin-bottom: 5px;
     }
-    .campo {
-      flex: 1 1 45%;
-      min-width: 200px;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"] {
-      width: 100%;
+
+    input, select, textarea {
       padding: 8px;
-      border-radius: 5px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
+      border-radius: 5px;
+      width: 100%;
     }
-    input[type="submit"] {
+
+    button {
       background-color: var(--vino);
       color: white;
-      font-weight: bold;
+      padding: 10px;
+      font-size: 1em;
       border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
+      border-radius: 5px;
       cursor: pointer;
-      margin-top: 20px;
-      width: 100%;
-      font-size: 1.1em;
-      transition: background-color 0.3s;
     }
-    input[type="submit"]:hover {
+
+    button:hover {
       background-color: #a00000;
     }
-    @media (max-width: 600px) {
-      .campo {
-        flex: 1 1 100%;
+
+    @media (min-width: 700px) {
+      .fila {
+        display: flex;
+        gap: 20px;
+      }
+      .fila > div {
+        flex: 1;
       }
     }
   </style>
 </head>
 <body>
-  <div class="contenedor-registro">
-    <h2>Registro CBTis 272</h2>
+  <div class="contenedor">
+    <h2>Formulario de Registro</h2>
     <form action="/registrar" method="POST">
-      <div class="campo">
-        <label for="apellido_paterno">Apellido paterno:</label>
-        <input type="text" id="apellido_paterno" name="apellido_paterno" required>
+      
+      <div class="fila">
+        <div>
+          <label>Apellido paterno:</label>
+          <input type="text" name="apellido_paterno" required>
+        </div>
+        <div>
+          <label>Apellido materno:</label>
+          <input type="text" name="apellido_materno" required>
+        </div>
       </div>
 
-      <div class="campo">
-        <label for="apellido_materno">Apellido materno:</label>
-        <input type="text" id="apellido_materno" name="apellido_materno" required>
+      <label>Nombres:</label>
+      <input type="text" name="nombres" required>
+
+      <div class="fila">
+        <div>
+          <label>Periodo:</label>
+          <input type="text" name="periodo" required>
+        </div>
+        <div>
+          <label>Semestre:</label>
+          <input type="text" name="semestre" required>
+        </div>
+        <div>
+          <label>Turno:</label>
+          <input type="text" name="turno" required>
+        </div>
       </div>
 
-      <div class="campo">
-        <label for="nombres">Nombres:</label>
-        <input type="text" id="nombres" name="nombres" required>
+      <label>Carrera:</label>
+      <input type="text" name="carrera" required>
+
+      <label>CURP:</label>
+      <input type="text" name="curp" required>
+
+      <label>Fecha de nacimiento:</label>
+      <input type="date" name="fecha_nacimiento" required>
+
+      <label>Lugar de nacimiento:</label>
+      <input type="text" name="lugar_nacimiento" required>
+
+      <label>Estado civil:</label>
+      <input type="text" name="estado_civil" required>
+
+      <div class="fila">
+        <div>
+          <label>Colonia:</label>
+          <input type="text" name="colonia" required>
+        </div>
+        <div>
+          <label>Domicilio:</label>
+          <input type="text" name="domicilio" required>
+        </div>
       </div>
 
-      <div class="campo">
-        <label for="periodo">Periodo:</label>
-        <input type="text" id="periodo" name="periodo" required>
-      </div>
+      <label>Código Postal (CP):</label>
+      <input type="text" name="cp" required>
 
-      <div class="campo">
-        <label for="curp">CURP:</label>
-        <input type="text" id="curp" name="curp" required>
-      </div>
+      <label>Número de teléfono del alumno:</label>
+      <input type="tel" name="telefono" required>
 
-      <div class="campo">
-        <label for="fecha_nacimiento">Fecha de nacimiento:</label>
-        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-      </div>
+      <label>Correo electrónico del alumno:</label>
+      <input type="email" name="email" required>
 
-      <div class="campo">
-        <label for="lugar_nacimiento">Lugar de nacimiento:</label>
-        <input type="text" id="lugar_nacimiento" name="lugar_nacimiento" required>
-      </div>
+      <label>Tipo de sangre:</label>
+      <input type="text" name="tipo_sangre" required>
 
-      <!-- Datos del tutor -->
-      <div class="campo">
-        <label for="tutor_nombre">Nombre del tutor o padre:</label>
-        <input type="text" id="tutor_nombre" name="tutor_nombre" required>
-      </div>
+      <label>Tipos de alergias:</label>
+      <input type="text" name="alergias" required>
 
-      <div class="campo">
-        <label for="tutor_telefono">Teléfono del tutor o padre:</label>
-        <input type="tel" id="tutor_telefono" name="tutor_telefono" required>
-      </div>
+      <label>Nombre del padre o tutor:</label>
+      <input type="text" name="tutor_nombre" required>
 
-      <!-- Contacto extra de emergencia -->
-      <div class="campo">
-        <label for="contacto_emergencia_nombre">Contacto extra (nombre):</label>
-        <input type="text" id="contacto_emergencia_nombre" name="contacto_emergencia_nombre" required>
-      </div>
+      <label>Teléfono del tutor:</label>
+      <input type="tel" name="tutor_telefono" required>
 
-      <div class="campo">
-        <label for="contacto_emergencia_telefono">Contacto extra (teléfono):</label>
-        <input type="tel" id="contacto_emergencia_telefono" name="contacto_emergencia_telefono" required>
-      </div>
+      <label>Correo del tutor:</label>
+      <input type="email" name="tutor_email" required>
 
-      <input type="submit" value="Registrarse">
+      <label>Escolaridad anterior (Secundaria):</label>
+      <input type="text" name="secundaria" required>
+
+      <label>¿Es alumno con discapacidad? (Sí / No):</label>
+      <input type="text" name="discapacidad" required>
+
+      <label>Observaciones médicas:</label>
+      <textarea name="observaciones" rows="3"></textarea>
+
+      <h3>Contacto extra en caso de emergencia</h3>
+      <label>Nombre del contacto:</label>
+      <input type="text" name="contacto_emergencia_nombre" required>
+
+      <label>Teléfono del contacto:</label>
+      <input type="tel" name="contacto_emergencia_telefono" required>
+
+      <button type="submit">Registrarse</button>
     </form>
   </div>
 </body>
