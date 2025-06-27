@@ -1,66 +1,197 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar Alumno - CBTis 272</title>
+  <style>
+    :root {
+      --vino: #800000;
+      --crema: #fff8e7;
+      --dorado: #cfa968;
+      --gris: #f5f5f5;
+    }
 
-{% block titulo %}Editar Alumno{% endblock %}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--crema);
+      margin: 0;
+      padding: 0;
+    }
 
-{% block contenido %}
-    <h2>Editar Alumno</h2>
-    <form method="POST" action="">
-        <label>Apellido paterno:</label><br>
-        <input type="text" name="apellido_paterno" value="{{ alumno.apellido_paterno }}" required><br>
+    header {
+      background-color: var(--vino);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
 
-        <label>Apellido materno:</label><br>
-        <input type="text" name="apellido_materno" value="{{ alumno.apellido_materno }}" required><br>
+    form {
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 30px;
+      border: 2px solid var(--dorado);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-        <label>Nombres:</label><br>
-        <input type="text" name="nombres" value="{{ alumno.nombres }}" required><br>
+    h2 {
+      color: var(--vino);
+      margin-bottom: 20px;
+      border-left: 6px solid var(--vino);
+      padding-left: 10px;
+    }
 
-        <label>Periodo:</label><br>
-        <input type="text" name="periodo" value="{{ alumno.periodo }}" required><br>
+    .grupo {
+      margin-bottom: 20px;
+    }
 
-        <label>Semestre:</label><br>
-        <input type="text" name="semestre" value="{{ alumno.semestre }}" required><br>
+    .grupo label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
 
-        <label>Turno:</label><br>
-        <input type="text" name="turno" value="{{ alumno.turno }}" required><br>
+    .grupo input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
 
-        <label>Carrera:</label><br>
-        <input type="text" name="carrera" value="{{ alumno.carrera }}" required><br>
+    .boton {
+      background-color: var(--vino);
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-        <label>CURP:</label><br>
-        <input type="text" name="curp" value="{{ alumno.curp }}" readonly><br>
+    .boton:hover {
+      background-color: #a00000;
+    }
 
-        <label>Fecha de nacimiento:</label><br>
-        <input type="date" name="fecha_nacimiento" value="{{ alumno.fecha_nacimiento }}" required><br>
+    .volver {
+      margin-top: 20px;
+      display: inline-block;
+      color: var(--vino);
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-        <label>Lugar de nacimiento:</label><br>
-        <input type="text" name="lugar_nacimiento" value="{{ alumno.lugar_nacimiento }}" required><br>
+    @media (max-width: 600px) {
+      form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
 
-        <label>Estado civil:</label><br>
-        <input type="text" name="estado_civil" value="{{ alumno.estado_civil }}" required><br>
+<header>
+  <h1>CBTis 272</h1>
+  <p>Editar datos del alumno</p>
+</header>
 
-        <label>Colonia:</label><br>
-        <input type="text" name="colonia" value="{{ alumno.colonia }}" required><br>
+<form action="/admin/alumno/{{ alumno.curp }}/editar" method="POST">
+  <div class="grupo">
+    <label>Apellido paterno</label>
+    <input type="text" name="apellido_paterno" value="{{ alumno.apellido_paterno }}" required>
+  </div>
 
-        <label>Domicilio:</label><br>
-        <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required><br>
+  <div class="grupo">
+    <label>Apellido materno</label>
+    <input type="text" name="apellido_materno" value="{{ alumno.apellido_materno }}" required>
+  </div>
 
-        <label>Código Postal (CP):</label><br>
-        <input type="text" name="cp" value="{{ alumno.cp }}" required><br>
+  <div class="grupo">
+    <label>Nombres</label>
+    <input type="text" name="nombres" value="{{ alumno.nombres }}" required>
+  </div>
 
-        <label>Número de teléfono:</label><br>
-        <input type="tel" name="telefono" value="{{ alumno.telefono }}" required><br>
+  <div class="grupo">
+    <label>Periodo</label>
+    <input type="text" name="periodo" value="{{ alumno.periodo }}" required>
+  </div>
 
-        <label>Correo electrónico:</label><br>
-        <input type="email" name="email" value="{{ alumno.email }}" required><br>
+  <div class="grupo">
+    <label>Semestre</label>
+    <input type="text" name="semestre" value="{{ alumno.semestre }}" required>
+  </div>
 
-        <label>Tipo de sangre:</label><br>
-        <input type="text" name="tipo_sangre" value="{{ alumno.tipo_sangre }}" required><br>
+  <div class="grupo">
+    <label>Turno</label>
+    <input type="text" name="turno" value="{{ alumno.turno }}" required>
+  </div>
 
-        <label>Tipos de alergias:</label><br>
-        <input type="text" name="alergias" value="{{ alumno.alergias }}"><br><br>
+  <div class="grupo">
+    <label>Carrera</label>
+    <input type="text" name="carrera" value="{{ alumno.carrera }}" required>
+  </div>
 
-        <input type="submit" value="Guardar cambios" style="background-color:#800000; color:white; padding:10px 20px; border:none; cursor:pointer; border-radius:5px;">
-    </form>
-    <br>
-    <a href="/admin/alumno/{{ alumno.curp }}" style="color:#800000;">← Volver a detalles del alumno</a>
-{% endblock %}
+  <div class="grupo">
+    <label>CURP</label>
+    <input type="text" name="curp" value="{{ alumno.curp }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Fecha de nacimiento</label>
+    <input type="date" name="fecha_nacimiento" value="{{ alumno.fecha_nacimiento }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Lugar de nacimiento</label>
+    <input type="text" name="lugar_nacimiento" value="{{ alumno.lugar_nacimiento }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Estado civil</label>
+    <input type="text" name="estado_civil" value="{{ alumno.estado_civil }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Colonia</label>
+    <input type="text" name="colonia" value="{{ alumno.colonia }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Domicilio</label>
+    <input type="text" name="domicilio" value="{{ alumno.domicilio }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Código Postal (CP)</label>
+    <input type="text" name="cp" value="{{ alumno.cp }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Teléfono</label>
+    <input type="tel" name="telefono" value="{{ alumno.telefono }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Correo electrónico</label>
+    <input type="email" name="email" value="{{ alumno.email }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Tipo de sangre</label>
+    <input type="text" name="tipo_sangre" value="{{ alumno.tipo_sangre }}" required>
+  </div>
+
+  <div class="grupo">
+    <label>Tipos de alergias</label>
+    <input type="text" name="alergias" value="{{ alumno.alergias }}">
+  </div>
+
+  <button class="boton" type="submit">Guardar cambios</button>
+  <br>
+  <a class="volver" href="/admin">Volver al panel</a>
+</form>
+
+</body>
+</html>
