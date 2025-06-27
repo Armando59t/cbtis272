@@ -40,11 +40,10 @@ def registrar():
         "telefono": request.form["telefono"],
         "email": request.form["email"],
         "tipo_sangre": request.form["tipo_sangre"],
-        "alergias": request.form.get("alergias", ""),
-        "tutor_nombre": request.form.get("tutor_nombre", ""),
-        "tutor_telefono": request.form.get("tutor_telefono", ""),
-        "contacto_emergencia_nombre": request.form.get("contacto_emergencia_nombre", ""),
-        "contacto_emergencia_telefono": request.form.get("contacto_emergencia_telefono", "")
+        "alergias": request.form["alergias"],
+        "tutor_telefono": request.form["tutor_telefono"],
+        "contacto_emergencia_nombre": request.form["contacto_emergencia_nombre"],
+        "contacto_emergencia_telefono": request.form["contacto_emergencia_telefono"]
     }
 
     if usuarios.find_one({"curp": datos["curp"]}):
@@ -98,6 +97,10 @@ def reinscripcion():
             "domicilio": request.form["domicilio"],
             "colonia": request.form["colonia"],
             "cp": request.form["cp"],
+            "tutor_telefono": request.form["tutor_telefono"],
+            "contacto_emergencia_nombre": request.form["contacto_emergencia_nombre"],
+            "contacto_emergencia_telefono": request.form["contacto_emergencia_telefono"],
+            "alergias": request.form.get("alergias", ""),
             "fecha_reinscripcion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
@@ -182,11 +185,10 @@ def editar_alumno(curp):
             "telefono": request.form["telefono"],
             "email": request.form["email"],
             "tipo_sangre": request.form["tipo_sangre"],
-            "alergias": request.form.get("alergias", ""),
-            "tutor_nombre": request.form.get("tutor_nombre", ""),
-            "tutor_telefono": request.form.get("tutor_telefono", ""),
-            "contacto_emergencia_nombre": request.form.get("contacto_emergencia_nombre", ""),
-            "contacto_emergencia_telefono": request.form.get("contacto_emergencia_telefono", "")
+            "alergias": request.form["alergias"],
+            "tutor_telefono": request.form["tutor_telefono"],
+            "contacto_emergencia_nombre": request.form["contacto_emergencia_nombre"],
+            "contacto_emergencia_telefono": request.form["contacto_emergencia_telefono"]
         }
 
         usuarios.update_one({"curp": curp}, {"$set": datos_actualizados})
