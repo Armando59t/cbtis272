@@ -15,7 +15,7 @@ admins = db["admins"]
 def inicio():
     return render_template("index.html")
 
-# ---------- REGISTRO ----------
+# ----------- REGISTRO -----------
 @app.route("/registro")
 def mostrar_registro():
     return render_template("registro.html")
@@ -41,9 +41,14 @@ def registrar():
         "email": request.form["email"],
         "tipo_sangre": request.form["tipo_sangre"],
         "alergias": request.form["alergias"],
-        "tutor_telefono": request.form["tutor_telefono"],
-        "contacto_emergencia_nombre": request.form["contacto_emergencia_nombre"],
-        "contacto_emergencia_telefono": request.form["contacto_emergencia_telefono"]
+        "nombre_tutor": request.form["nombre_tutor"],
+        "telefono_tutor": request.form["telefono_tutor"],
+        "email_tutor": request.form["email_tutor"],
+        "escuela_anterior": request.form["escuela_anterior"],
+        "discapacidad": request.form["discapacidad"],
+        "observaciones_medicas": request.form["observaciones_medicas"],
+        "contacto_extra_nombre": request.form["contacto_extra_nombre"],
+        "contacto_extra_telefono": request.form["contacto_extra_telefono"]
     }
 
     if usuarios.find_one({"curp": datos["curp"]}):
@@ -52,7 +57,7 @@ def registrar():
     usuarios.insert_one(datos)
     return render_template("mensaje.html", titulo="Registro exitoso", mensaje="¡Tu registro fue guardado!", link="/login", texto_link="Inicia sesión")
 
-# ---------- LOGIN ALUMNO ----------
+# ----------- LOGIN ALUMNO -----------
 @app.route("/login")
 def mostrar_login():
     return render_template("login.html")
@@ -63,7 +68,6 @@ def iniciar_sesion():
     email = request.form["email"]
 
     usuario = usuarios.find_one({"curp": curp, "email": email})
-
     if usuario:
         session["alumno_nombre"] = usuario["nombres"]
         session["alumno_curp"] = usuario["curp"]
@@ -71,15 +75,13 @@ def iniciar_sesion():
     else:
         return render_template("mensaje.html", titulo="Error", mensaje="CURP o correo incorrecto", link="/login", texto_link="Intentar de nuevo")
 
-# ---------- MENU ALUMNO ----------
+# ----------- MENU ALUMNO / LOGOUT -----------
 @app.route("/logout")
 def logout():
-    session.pop("alumno_nombre", None)
-    session.pop("alumno_curp", None)
-    session.pop("admin_logged_in", None)
+    session.clear()
     return redirect("/login")
 
-# ---------- REINSCRIPCIÓN ----------
+# ----------- REINSCRIPCIÓN -----------
 @app.route("/reinscripcion", methods=["GET", "POST"])
 def reinscripcion():
     if not session.get("alumno_curp"):
@@ -97,24 +99,25 @@ def reinscripcion():
             "domicilio": request.form["domicilio"],
             "colonia": request.form["colonia"],
             "cp": request.form["cp"],
-            "tutor_telefono": request.form["tutor_telefono"],
-            "contacto_emergencia_nombre": request.form["contacto_emergencia_nombre"],
-            "contacto_emergencia_telefono": request.form["contacto_emergencia_telefono"],
-            "alergias": request.form.get("alergias", ""),
+            "alergias": request.form["alergias"],
+            "nombre_tutor": request.form["nombre_tutor"],
+            "telefono_tutor": request.form["telefono_tutor"],
+            "email_tutor": request.form["email_tutor"],
+            "contacto_extra_nombre": request.form["contacto_extra_nombre"],
+            "contacto_extra_telefono": request.form["contacto_extra_telefono"],
             "fecha_reinscripcion": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         usuarios.update_one({"curp": curp}, {"$set": nuevos_datos})
-        return render_template("mensaje.html", titulo="Reinscripción exitosa", mensaje="Tus datos fueron actualizados", link="/", texto_link="Ir al inicio")
+        return render_template("mensaje.html", titulo="Reinscripción exitosa", mensaje="Tus datos fueron actualizados correctamente", link="/", texto_link="Volver al inicio")
 
     return render_template("reinscripcion_form.html", alumno=alumno)
 
-# ---------- ADMIN LOGIN ----------
+# ----------- ADMIN LOGIN -----------
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
         usuario = request.form["usuario"]
         password = request.form["password"]
-
         admin = admins.find_one({"usuario": usuario, "password": password})
         if admin:
             session["admin_logged_in"] = True
@@ -123,14 +126,13 @@ def admin_login():
             return render_template("mensaje.html", titulo="Acceso denegado", mensaje="Usuario o contraseña incorrectos", link="/admin/login", texto_link="Intentar de nuevo")
     return render_template("admin_login.html")
 
-# ---------- PANEL ADMIN ----------
+# ----------- PANEL ADMINISTRADOR -----------
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if not session.get("admin_logged_in"):
         return redirect("/admin/login")
 
     usuarios_encontrados = []
-
     if request.method == "POST":
         busqueda = request.form["busqueda"]
         usuarios_encontrados = list(usuarios.find({
@@ -144,7 +146,7 @@ def admin():
 
     return render_template("admin.html", usuarios=usuarios_encontrados)
 
-# ---------- VER DETALLE ALUMNO ----------
+# ----------- DETALLE DE ALUMNO -----------
 @app.route("/admin/alumno/<curp>")
 def ver_alumno(curp):
     if not session.get("admin_logged_in"):
@@ -153,10 +155,9 @@ def ver_alumno(curp):
     alumno = usuarios.find_one({"curp": curp})
     if not alumno:
         return render_template("mensaje.html", titulo="No encontrado", mensaje="Alumno no encontrado", link="/admin", texto_link="Volver")
-
     return render_template("alumno_detalle.html", alumno=alumno)
 
-# ---------- EDITAR ALUMNO ----------
+# ----------- EDITAR ALUMNO -----------
 @app.route("/admin/alumno/<curp>/editar", methods=["GET", "POST"])
 def editar_alumno(curp):
     if not session.get("admin_logged_in"):
@@ -186,9 +187,14 @@ def editar_alumno(curp):
             "email": request.form["email"],
             "tipo_sangre": request.form["tipo_sangre"],
             "alergias": request.form["alergias"],
-            "tutor_telefono": request.form["tutor_telefono"],
-            "contacto_emergencia_nombre": request.form["contacto_emergencia_nombre"],
-            "contacto_emergencia_telefono": request.form["contacto_emergencia_telefono"]
+            "nombre_tutor": request.form["nombre_tutor"],
+            "telefono_tutor": request.form["telefono_tutor"],
+            "email_tutor": request.form["email_tutor"],
+            "escuela_anterior": request.form["escuela_anterior"],
+            "discapacidad": request.form["discapacidad"],
+            "observaciones_medicas": request.form["observaciones_medicas"],
+            "contacto_extra_nombre": request.form["contacto_extra_nombre"],
+            "contacto_extra_telefono": request.form["contacto_extra_telefono"]
         }
 
         usuarios.update_one({"curp": curp}, {"$set": datos_actualizados})
@@ -196,5 +202,6 @@ def editar_alumno(curp):
 
     return render_template("editar_alumno.html", alumno=alumno)
 
+# ----------- EJECUCIÓN -----------
 if __name__ == "__main__":
     app.run(debug=True)
