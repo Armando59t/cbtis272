@@ -15,7 +15,7 @@ admins = db["admins"]
 def inicio():
     return render_template("index.html")
 
-# ----------- REGISTRO -----------
+# ----------- REGISTRO
 @app.route("/registro")
 def mostrar_registro():
     return render_template("registro.html")
@@ -57,7 +57,7 @@ def registrar():
     usuarios.insert_one(datos)
     return render_template("mensaje.html", titulo="Registro exitoso", mensaje="¡Tu registro fue guardado!", link="/login", texto_link="Inicia sesión")
 
-# ----------- LOGIN ALUMNO -----------
+# ----------- LOGIN ALUMNO
 @app.route("/login")
 def mostrar_login():
     return render_template("login.html")
@@ -75,13 +75,13 @@ def iniciar_sesion():
     else:
         return render_template("mensaje.html", titulo="Error", mensaje="CURP o correo incorrecto", link="/login", texto_link="Intentar de nuevo")
 
-# ----------- MENU ALUMNO / LOGOUT -----------
+# ----------- MENU ALUMNO / LOGOUT 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/login")
 
-# ----------- REINSCRIPCIÓN -----------
+# ----------- REINSCRIPCIÓN 
 @app.route("/reinscripcion", methods=["GET", "POST"])
 def reinscripcion():
     if not session.get("alumno_curp"):
@@ -205,3 +205,4 @@ def editar_alumno(curp):
 # ----------- EJECUCIÓN -----------
 if __name__ == "__main__":
     app.run(debug=True)
+
