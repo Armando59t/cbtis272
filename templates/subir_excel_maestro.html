@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Excel | Bwerbung</title>
+</head>
+<body>
+    <h2>Enviar archivo Excel</h2>
+
+    <form action="/maestro/enviar_excel" method="POST" enctype="multipart/form-data">
+        <label>Selecciona el archivo Excel:</label><br>
+        <input type="file" name="excel" accept=".xls,.xlsx" required><br><br>
+
+        <label>Correo destino:</label><br>
+        <input type="email" name="correo" required><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <br>
+    <a href="/maestro">Volver al panel</a>
+</body>
+</html>
