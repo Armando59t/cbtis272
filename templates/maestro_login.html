@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Portal Maestros | CBTis 272</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Acceso Maestros | Buwerbung</title>
+
   <style>
     :root {
       --vino: #800000;
@@ -27,8 +28,8 @@
     }
 
     .contenedor {
-      max-width: 900px;
-      margin: 40px auto;
+      max-width: 420px;
+      margin: 60px auto;
       background-color: white;
       border: 2px solid var(--dorado);
       padding: 30px;
@@ -37,71 +38,78 @@
     }
 
     h2 {
-      border-left: 6px solid var(--vino);
-      padding-left: 10px;
-      color: var(--vino);
-      margin-top: 30px;
-    }
-
-    .opciones-acceso {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-
-    .tarjeta-opcion {
-      background-color: var(--gris);
-      border: 2px solid var(--dorado);
-      border-radius: 10px;
-      width: 250px;
-      height: 150px;
-      margin: 10px;
-      padding: 20px;
       text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2em;
       color: var(--vino);
-      text-decoration: none;
+      margin-bottom: 25px;
     }
 
-    .tarjeta-opcion:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    label {
+      font-weight: bold;
+      color: var(--vino);
     }
 
-    .salir {
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 18px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--vino);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #5e0000;
+    }
+
+    .volver {
       display: block;
       text-align: center;
-      margin-top: 30px;
+      margin-top: 20px;
       text-decoration: none;
       color: var(--vino);
       font-weight: bold;
+    }
+
+    .volver:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Portal de Maestros</h1>
-  <p>CBTis 272 – Sistema Bwerbung</p>
+  <h1>CBTis 272</h1>
+  <p>Portal Maestro - Buwerbung</p>
 </header>
 
 <div class="contenedor">
-  <h2>Bienvenido, {{ nombre }}</h2>
+  <h2>Acceso a Maestros</h2>
 
-  <div class="opciones-acceso">
-    <a href="/maestro/subir_excel" class="tarjeta-opcion">
-      Enviar calificaciones por Excel
-    </a>
-  </div>
+  <form method="POST">
+    <label>Usuario:</label>
+    <input type="text" name="usuario" required>
 
-  <a href="/logout" class="salir">Cerrar sesión</a>
+    <label>Contraseña:</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Iniciar sesión</button>
+  </form>
+
+  <a href="/" class="volver">Volver al inicio</a>
 </div>
 
 </body>
