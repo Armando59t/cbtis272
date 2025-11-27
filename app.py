@@ -1,7 +1,8 @@
 import os
+import traceback
 from flask import Flask, request, render_template, redirect, session
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
@@ -11,7 +12,18 @@ app = Flask(__name__)
 # ---------- VARIABLES DE ENTORNO (RENDER) ----------
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "clave_respaldo")
 
+# Ajustes de cookie para despliegues (Render usa HTTPS)
+# Nota: SESSION_COOKIE_SECURE=True requiere HTTPS (ok en Render).
+app.config.update(
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True,
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=8)
+)
+
 MONGO_URI = os.environ.get("MONGO_URI")
+if not MONGO_URI:
+    raise RuntimeError("MONGO_URI no está configurado en las variables de entorno.")
+
 client = MongoClient(MONGO_URI)
 db = client["cbtis272"]
 
@@ -34,19 +46,28 @@ app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER")
 
 mail = Mail(app)
 
-# ---------- FUNCIONES ----------
+# ---------- HELPERS ----------
+def archivo_permitido(nombre):
+    if not nombre:
+        return False
+    return os.path.splitext(nombre)[1].lower() in ALLOWED_EXTENSIONS
+
 def solo_maestros(f):
     @wraps(f)
     def decorador(*args, **kwargs):
         if not session.get("maestro_logged"):
-            return redirect("/maestro/login")
+            # Para depuración, devolver mensaje claro en vez de redirect silencioso
+            return render_template(
+                "mensaje.html",
+                titulo="Acceso restringido",
+                mensaje="Debes iniciar sesión como maestro para ver esta sección.",
+                link="/maestro/login",
+                texto_link="Iniciar sesión"
+            )
         return f(*args, **kwargs)
     return decorador
 
-def archivo_permitido(nombre):
-    return os.path.splitext(nombre)[1].lower() in ALLOWED_EXTENSIONS
-
-# ---------- INICIO ----------
+# ---------- RUTAS ----------
 @app.route("/")
 def inicio():
     return render_template("index.html")
@@ -60,7 +81,7 @@ def mostrar_registro():
 def registrar():
     datos = request.form.to_dict()
 
-    if usuarios.find_one({"curp": datos["curp"]}):
+    if usuarios.find_one({"curp": datos.get("curp")}):
         return render_template(
             "mensaje.html",
             titulo="Error",
@@ -85,24 +106,29 @@ def mostrar_login():
 
 @app.route("/iniciar_sesion", methods=["POST"])
 def iniciar_sesion():
-    usuario = usuarios.find_one({
-        "curp": request.form["curp"],
-        "email": request.form["email"]
-    })
+    try:
+        usuario = usuarios.find_one({
+            "curp": request.form.get("curp"),
+            "email": request.form.get("email")
+        })
 
-    if usuario:
-        session.clear()
-        session["alumno"] = usuario["curp"]
-        session["nombre"] = usuario["nombres"]
-        return render_template("menu_alumno.html", nombre=usuario["nombres"])
-    else:
-        return render_template(
-            "mensaje.html",
-            titulo="Error",
-            mensaje="Datos incorrectos",
-            link="/login",
-            texto_link="Intentar de nuevo"
-        )
+        if usuario:
+            session.clear()
+            session.permanent = True
+            session["alumno"] = usuario["curp"]
+            session["nombre"] = usuario.get("nombres", "Alumno")
+            return render_template("menu_alumno.html", nombre=usuario.get("nombres", "Alumno"))
+        else:
+            return render_template(
+                "mensaje.html",
+                titulo="Error",
+                mensaje="Datos incorrectos",
+                link="/login",
+                texto_link="Intentar de nuevo"
+            )
+    except Exception:
+        app.logger.error("Error en iniciar_sesion:\n" + traceback.format_exc())
+        return render_template("mensaje.html", titulo="Error", mensaje="Error interno", link="/", texto_link="Inicio")
 
 # ---------- LOGOUT ----------
 @app.route("/logout")
@@ -121,9 +147,7 @@ def reinscripcion():
     if request.method == "POST":
         nuevos = request.form.to_dict()
         nuevos["fecha_reinscripcion"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
         usuarios.update_one({"curp": alumno["curp"]}, {"$set": nuevos})
-
         return render_template(
             "mensaje.html",
             titulo="Éxito",
@@ -138,23 +162,28 @@ def reinscripcion():
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
-        admin = admins.find_one({
-            "usuario": request.form["usuario"],
-            "password": request.form["password"]
-        })
+        try:
+            admin = admins.find_one({
+                "usuario": request.form.get("usuario"),
+                "password": request.form.get("password")
+            })
 
-        if admin:
-            session.clear()
-            session["admin"] = True
-            return redirect("/admin")
+            if admin:
+                session.clear()
+                session.permanent = True
+                session["admin"] = True
+                return redirect("/admin")
 
-        return render_template(
-            "mensaje.html",
-            titulo="Error",
-            mensaje="Acceso denegado",
-            link="/admin/login",
-            texto_link="Intentar"
-        )
+            return render_template(
+                "mensaje.html",
+                titulo="Error",
+                mensaje="Acceso denegado",
+                link="/admin/login",
+                texto_link="Intentar"
+            )
+        except Exception:
+            app.logger.error("Error en admin_login:\n" + traceback.format_exc())
+            return render_template("mensaje.html", titulo="Error", mensaje="Error interno", link="/admin/login", texto_link="Volver")
 
     return render_template("admin_login.html")
 
@@ -162,34 +191,44 @@ def admin_login():
 def admin():
     if not session.get("admin"):
         return redirect("/admin/login")
-
     return render_template("admin.html", usuarios=list(usuarios.find()))
 
-# ---------- MAESTROS (CORREGIDO) ----------
+# ---------- MAESTROS (mejorado y debug-safe) ----------
 @app.route("/maestro/login", methods=["GET", "POST"])
 def login_maestro():
     if request.method == "POST":
-        maestro = maestros.find_one({
-            "usuario": request.form["usuario"],
-            "password": request.form["password"]
-        })
+        usuario = request.form.get("usuario")
+        password = request.form.get("password")
+
+        try:
+            maestro = maestros.find_one({
+                "usuario": usuario,
+                "password": password
+            })
+        except Exception:
+            app.logger.error("Error consultando maestros:\n" + traceback.format_exc())
+            return render_template("mensaje.html", titulo="Error", mensaje="Error al consultar base de datos", link="/maestro/login", texto_link="Volver")
 
         if maestro:
-            # ✅ FIX: no borrar toda la sesión
+            # eliminar otras sesiones sin borrar toda la cookie
             session.pop("alumno", None)
             session.pop("admin", None)
 
+            session.permanent = True
             session["maestro_logged"] = True
-            session["maestro_nombre"] = maestro["nombre"]
+            session["maestro_nombre"] = maestro.get("nombre", "Maestro")
+
+            # Debug: imprimir sesión en logs (remueve en producción si quieres)
+            app.logger.info(f"Sesión maestro creada: {session.get('maestro_nombre')}")
 
             return redirect("/maestro")
 
         return render_template(
             "mensaje.html",
             titulo="Error",
-            mensaje="Acceso denegado",
+            mensaje="Usuario o contraseña incorrectos",
             link="/maestro/login",
-            texto_link="Intentar"
+            texto_link="Intentar de nuevo"
         )
 
     return render_template("maestro_login.html")
@@ -197,7 +236,9 @@ def login_maestro():
 @app.route("/maestro")
 @solo_maestros
 def panel_maestro():
-    return render_template("maestro_menu.html", nombre=session["maestro_nombre"])
+    # usar get para evitar KeyError si la sesión no está bien
+    nombre = session.get("maestro_nombre", "Maestro")
+    return render_template("maestro_menu.html", nombre=nombre)
 
 @app.route("/maestro/subir_excel")
 @solo_maestros
@@ -228,7 +269,7 @@ def enviar_excel():
             "Archivo Excel - BWERBUNG",
             recipients=[correo]
         )
-        msg.body = f"Archivo enviado desde BWERBUNG por el maestro {session['maestro_nombre']}."
+        msg.body = f"Archivo enviado desde BWERBUNG por el maestro {session.get('maestro_nombre', 'Maestro')}."
 
         with open(ruta, "rb") as f:
             msg.attach(
@@ -239,14 +280,14 @@ def enviar_excel():
 
         mail.send(msg)
 
-    except Exception as e:
+    except Exception:
+        app.logger.error("Error enviando correo:\n" + traceback.format_exc())
         if os.path.exists(ruta):
             os.remove(ruta)
-
         return render_template(
             "mensaje.html",
             titulo="Error",
-            mensaje=f"No se pudo enviar el correo: {e}",
+            mensaje="No se pudo enviar el correo (revisa logs).",
             link="/maestro",
             texto_link="Volver"
         )
