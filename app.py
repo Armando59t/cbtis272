@@ -165,7 +165,7 @@ def admin():
 
     return render_template("admin.html", usuarios=list(usuarios.find()))
 
-# ---------- MAESTROS ----------
+# ---------- MAESTROS (CORREGIDO) ----------
 @app.route("/maestro/login", methods=["GET", "POST"])
 def login_maestro():
     if request.method == "POST":
@@ -175,9 +175,13 @@ def login_maestro():
         })
 
         if maestro:
-            session.clear()
+            # ✅ FIX: no borrar toda la sesión
+            session.pop("alumno", None)
+            session.pop("admin", None)
+
             session["maestro_logged"] = True
             session["maestro_nombre"] = maestro["nombre"]
+
             return redirect("/maestro")
 
         return render_template(
@@ -234,6 +238,7 @@ def enviar_excel():
             )
 
         mail.send(msg)
+
     except Exception as e:
         if os.path.exists(ruta):
             os.remove(ruta)
