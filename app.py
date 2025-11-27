@@ -1,4 +1,4 @@
-# app.py - BWERBUNG (Flask) - Versión con módulo Maestro integrado
+
 import os
 from datetime import datetime
 from functools import wraps
@@ -324,6 +324,5 @@ def enviar_excel_maestro():
 
 # ===== EJECUCIÓN =====
 if __name__ == "__main__":
-    # En producción Render u otro hosting se suele arrancar con gunicorn.
-    # Aquí lo dejamos en False por seguridad.
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)
+
