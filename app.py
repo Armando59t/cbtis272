@@ -22,7 +22,7 @@ app.config.update(
 
 MONGO_URI = os.environ.get("MONGO_URI")
 if not MONGO_URI:
-    raise RuntimeError("MONGO_URI no está configurado en las variables de entorno.")
+    raise RuntimeError(mongodb+srv://armando59:<armando.59>@cluster0.osxgqoy.mongodb.net/?appName=Cluster0)
 
 client = MongoClient(MONGO_URI)
 db = client["cbtis272"]
@@ -310,3 +310,4 @@ if __name__ == "__main__":
         port=int(os.environ.get("PORT", 5000)),
         debug=False
     )
+
